@@ -1,20 +1,28 @@
-// jeux de la vie.cpp : Ce fichier contient la fonction 'main'. L'exécution du programme commence et se termine à cet endroit.
-//
-
 #include <iostream>
+#include <fstream>
+#include <vector>
+#include <string>
 
-int main()
-{
-    std::cout << "Hello World!\n";
+using namespace std;
+
+void creationMatrice(int a, int b) {
+    const int lignes = a;
+    const int colonnes = b;
+
+    vector<vector<int>> matrice(lignes, vector<int>(colonnes, 0));
+
+    cout << "Matrice remplie de 0 :\n";
+	for (int i = 0; i < lignes; ++i) { /// associe a i toute les valeur de la  variable LIGNES 
+        for (int j = 0; j < colonnes; ++j) { /// associe a i toute les valeur de la  variable COLONNES
+            cout << matrice[i][j] << " ";
+        }
+        cout << endl;
+    }
 }
 
-// Exécuter le programme : Ctrl+F5 ou menu Déboguer > Exécuter sans débogage
-// Déboguer le programme : F5 ou menu Déboguer > Démarrer le débogage
 
-// Astuces pour bien démarrer : 
-//   1. Utilisez la fenêtre Explorateur de solutions pour ajouter des fichiers et les gérer.
-//   2. Utilisez la fenêtre Team Explorer pour vous connecter au contrôle de code source.
-//   3. Utilisez la fenêtre Sortie pour voir la sortie de la génération et d'autres messages.
-//   4. Utilisez la fenêtre Liste d'erreurs pour voir les erreurs.
-//   5. Accédez à Projet > Ajouter un nouvel élément pour créer des fichiers de code, ou à Projet > Ajouter un élément existant pour ajouter des fichiers de code existants au projet.
-//   6. Pour rouvrir ce projet plus tard, accédez à Fichier > Ouvrir > Projet et sélectionnez le fichier .sln.
+int main() {
+	creationMatrice(5, 5);
+
+}
+
