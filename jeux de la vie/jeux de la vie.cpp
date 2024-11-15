@@ -1,20 +1,63 @@
-// jeux de la vie.cpp : Ce fichier contient la fonction 'main'. L'exécution du programme commence et se termine à cet endroit.
-//
-
 #include <iostream>
+#include <fstream>
+#include <string>
 
-int main()
-{
-    std::cout << "Hello World!\n";
+using namespace std;
+
+void affichageTableau(int* grill, int lignes, int colonnes) {
+    cout << "Tableau de taille " << lignes << "x" << colonnes << " :\n";
+    for (int i = 0; i < lignes; ++i) {
+        for (int j = 0; j < colonnes; ++j) {
+            cout << grill[i * colonnes + j] << " ";
+        }
+        cout << endl;
+    }
 }
 
-// Exécuter le programme : Ctrl+F5 ou menu Déboguer > Exécuter sans débogage
-// Déboguer le programme : F5 ou menu Déboguer > Démarrer le débogage
+int* creationTableau(int a, int b) {
+    int lignes = a;
+    int colonnes = b;
 
-// Astuces pour bien démarrer : 
-//   1. Utilisez la fenêtre Explorateur de solutions pour ajouter des fichiers et les gérer.
-//   2. Utilisez la fenêtre Team Explorer pour vous connecter au contrôle de code source.
-//   3. Utilisez la fenêtre Sortie pour voir la sortie de la génération et d'autres messages.
-//   4. Utilisez la fenêtre Liste d'erreurs pour voir les erreurs.
-//   5. Accédez à Projet > Ajouter un nouvel élément pour créer des fichiers de code, ou à Projet > Ajouter un élément existant pour ajouter des fichiers de code existants au projet.
-//   6. Pour rouvrir ce projet plus tard, accédez à Fichier > Ouvrir > Projet et sélectionnez le fichier .sln.
+    int* grill = new int[lignes * colonnes]();
+
+
+    for (int i = 0; i < lignes * colonnes; ++i) {
+        grill[i] = 0;
+    }
+    return grill;
+}
+
+int main() {
+    string cheminFichier = "C:\\Users\\methe\\source\\repos\\jeux de la vie\\test.txt"; // Remplacez par le chemin de votre fichier
+    ifstream fichier(cheminFichier);
+
+    if (!fichier) {
+        cerr << "ferme le fichier fdp" << endl;
+        return 1;
+    }
+
+    string ligne1, ligne2;
+    if (getline(fichier, ligne1)) {
+    }
+    else {
+        cout << "casser sa marche pas " << endl;
+    }
+    if (getline(fichier, ligne2)) {
+        cout << "Premiere ligne : " << ligne2 << endl;
+    }
+    else {
+        cout << "casser sa marche pas 2" << endl;
+    }
+
+    int lignes = stoi(ligne1);
+    int colonnes = stoi(ligne2);
+    int* tableau = creationTableau(lignes, colonnes);
+
+    affichageTableau(tableau, lignes, colonnes);
+
+
+
+    delete[] tableau;
+
+    return 0;
+}
