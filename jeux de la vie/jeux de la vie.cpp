@@ -1,28 +1,41 @@
 #include <iostream>
-#include <fstream>
-#include <vector>
 #include <string>
 
 using namespace std;
 
-void creationMatrice(int a, int b) {
-    const int lignes = a;
-    const int colonnes = b;
-
-    vector<vector<int>> matrice(lignes, vector<int>(colonnes, 0));
-
-    cout << "Matrice remplie de 0 :\n";
-	for (int i = 0; i < lignes; ++i) { /// associe a i toute les valeur de la  variable LIGNES 
-        for (int j = 0; j < colonnes; ++j) { /// associe a i toute les valeur de la  variable COLONNES
-            cout << matrice[i][j] << " ";
+void affichageTableau(int* grill, int lignes, int colonnes) {
+    cout << "Tableau de taille " << lignes << "x" << colonnes << " :\n";
+    for (int i = 0; i < lignes; ++i) {
+        for (int j = 0; j < colonnes; ++j) {
+            cout << grill[i * colonnes + j] << " ";
         }
         cout << endl;
     }
 }
 
+int* creationTableau(int a, int b) {
+    int lignes = a;
+    int colonnes = b;
 
-int main() {
-	creationMatrice(5, 5);
+    int* grill = new int[lignes * colonnes]();
 
+    
+    for (int i = 0; i < lignes * colonnes; ++i) {
+        grill[i] = 0; 
+    }
+    return grill;
 }
 
+int main() {
+    string cheminFichier = "C:\\Users\\methe\\\repos\\ de la vie\\test.txt";
+    int lignes = 100;
+    int colonnes = 100;
+    int* tableau = creationTableau(lignes, colonnes); 
+
+    cout << "Utilisation du tableau retourné :\n";
+    affichageTableau(tableau, lignes, colonnes);
+
+    delete[] tableau;
+
+    return 0;
+}
