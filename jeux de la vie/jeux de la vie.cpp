@@ -5,13 +5,19 @@
 
 using namespace std;
 
-bool changerValeur(int* grill, int emplacement){
-	/// changer la valeur d'une case
-	grill[emplacement] = 1;
+bool* creationTableau(int a, int b) {
+    bool* grill = new bool[a * b](); // crée le tableau et initialise tout à false
     return grill;
 }
 
-void affichageTableau(int* grill, int lignes, int colonnes){  /// affichage du tableau
+bool changerValeur(bool* grill, int emplacement) {
+    // Change la valeur de l'emplacement spécifié
+    grill[emplacement] = !grill[emplacement]; // Inversion de la valeur pour montrer le changement
+    return grill[emplacement];
+}
+
+void affichageTableauClassic(bool* grill, int lignes, int colonnes) {  /// affichage du tableau
+    system("cls");
     cout << "Tableau de taille " << lignes << "x" << colonnes << " :\n";
     for (int i = 0; i < lignes; ++i) {
         for (int j = 0; j < colonnes; ++j) {
@@ -21,9 +27,16 @@ void affichageTableau(int* grill, int lignes, int colonnes){  /// affichage du t
     }
 }
 
-int* creationTableau(int a, int b) {
-	int* grill = new int[a * b](); // crée le tableau et initialise tout à 0
-    return grill;
+void affichageTableauBool(bool* grill, int lignes, int colonnes) {
+    system("cls");
+    cout << "Tableau de taille " << lignes << "x" << colonnes << " :\n";
+    for (int i = 0; i < lignes; ++i) {
+        for (int j = 0; j < colonnes; ++j) {
+            // Affichage de `true` et `false` comme 1 et 0 respectivement
+            cout << (grill[i * colonnes + j] ? "true " : "false ");
+        }
+        cout << endl;
+    }
 }
 
 bool lireDimensions(const string& cheminFichier, int& lignes, int& colonnes) {
@@ -56,7 +69,7 @@ bool lireDimensions(const string& cheminFichier, int& lignes, int& colonnes) {
     return true;
 }
 
-bool lireTableauDepuisFichier(const string& cheminFichier, int* tableau, int lignes, int colonnes) {
+bool lireTableauDepuisFichier(const string& cheminFichier, bool* tableau, int lignes, int colonnes) {
     ifstream fichier(cheminFichier);
     if (!fichier.is_open()) {
         cerr << "ferme le fichier ou tu la suprimer" << endl;
@@ -104,13 +117,15 @@ int main() {
         return -1;
     }
 
-    int* tableau = creationTableau(lignes, colonnes);
+    bool* tableau = creationTableau(lignes, colonnes);
 
     lireTableauDepuisFichier(cheminFichier, tableau, lignes, colonnes);
-    affichageTableau(tableau, lignes, colonnes);
 
-	changerValeur(tableau, 5);
+    affichageTableauClassic(tableau, lignes, colonnes);
 
+	changerValeur(tableau, 10);
+
+    affichageTableauBool(tableau, lignes, colonnes);
 
     
     delete[] tableau;
