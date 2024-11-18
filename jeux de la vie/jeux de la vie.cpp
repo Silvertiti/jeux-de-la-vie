@@ -5,6 +5,12 @@
 
 using namespace std;
 
+bool changerValeur(int* grill, int emplacement){
+	/// changer la valeur d'une case
+	grill[emplacement] = 1;
+    return grill;
+}
+
 void affichageTableau(int* grill, int lignes, int colonnes){  /// affichage du tableau
     cout << "Tableau de taille " << lignes << "x" << colonnes << " :\n";
     for (int i = 0; i < lignes; ++i) {
@@ -29,7 +35,7 @@ bool lireDimensions(const string& cheminFichier, int& lignes, int& colonnes) {
 
     string ligne;
 
-	// associationd de la deuxiéme ligne pour les lignes
+	// association de la deuxiéme ligne pour les lignes
     if (getline(fichier, ligne)) {
         lignes = stoi(ligne);
     }
@@ -56,7 +62,6 @@ bool lireTableauDepuisFichier(const string& cheminFichier, int* tableau, int lig
         cerr << "ferme le fichier ou tu la suprimer" << endl;
         return false;
     }
-
     string ligne;
     int index = 0;
 
@@ -67,7 +72,6 @@ bool lireTableauDepuisFichier(const string& cheminFichier, int* tableau, int lig
             return false;
         }
     }
-
     // début de la lecture du tableau
     for (int i = 0; i < lignes; ++i) {
         if (getline(fichier, ligne)) {
@@ -83,10 +87,11 @@ bool lireTableauDepuisFichier(const string& cheminFichier, int* tableau, int lig
                 }
             }
         }
-        else {
+        else {             
             cerr << "bon ton fichier est vide FDP" << endl;
+
             return false;
-        }
+        } 
     }
     return true;
 }
@@ -103,8 +108,11 @@ int main() {
 
     lireTableauDepuisFichier(cheminFichier, tableau, lignes, colonnes);
     affichageTableau(tableau, lignes, colonnes);
-    
 
+	changerValeur(tableau, 5);
+
+
+    
     delete[] tableau;
     return 0;
 }
