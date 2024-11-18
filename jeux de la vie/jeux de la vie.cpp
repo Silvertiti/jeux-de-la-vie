@@ -40,18 +40,26 @@ bool lireFichier(const string& cheminFichier, string& ligne1, string& ligne2) {
     return true;
 }
 
+bool changerValeur(int* grill,int emplacement) {
+	grill[emplacement] = 1;
+    return grill;
+}
+
 int main() {
     string cheminFichier = "C:\\Users\\methe\\source\\repos\\jeux de la vie\\test.txt";
     string ligne1, ligne2;
 
 	lireFichier(cheminFichier, ligne1, ligne2);
     
-
     int lignes = stoi(ligne1);
     int colonnes = stoi(ligne2);
 
     int* tableau = creationTableau(lignes, colonnes);
     affichageTableau(tableau, lignes, colonnes);
-    delete[] tableau;
+	int emplacement = 40;
+	changerValeur(tableau, emplacement);
+	affichageTableau(tableau, lignes, colonnes);
 
+
+    delete[] tableau;
 }
