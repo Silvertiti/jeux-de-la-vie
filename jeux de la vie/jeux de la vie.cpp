@@ -2,7 +2,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-
+#include <windows.h> // Nécessaire pour Sleep sous Windows
 using namespace std;
 
 bool* creationTableau(int a, int b) {
@@ -16,7 +16,7 @@ bool changerValeur(bool* grill, int emplacement) {
     return grill[emplacement];
 }
 
-void affichageTableauClassic(bool* grill, int lignes, int colonnes) {  /// affichage du tableau
+void affichageTableauClassic(bool* grill, int lignes, int colonnes) {
     system("cls");
     cout << "Tableau de taille " << lignes << "x" << colonnes << " :\n";
     for (int i = 0; i < lignes; ++i) {
@@ -32,7 +32,6 @@ void affichageTableauBool(bool* grill, int lignes, int colonnes) {
     cout << "Tableau de taille " << lignes << "x" << colonnes << " :\n";
     for (int i = 0; i < lignes; ++i) {
         for (int j = 0; j < colonnes; ++j) {
-            // Affichage de `true` et `false` comme 1 et 0 respectivement
             cout << (grill[i * colonnes + j] ? "true " : "false ");
         }
         cout << endl;
@@ -47,8 +46,6 @@ bool lireDimensions(const string& cheminFichier, int& lignes, int& colonnes) {
     }
 
     string ligne;
-
-	// association de la deuxiéme ligne pour les lignes
     if (getline(fichier, ligne)) {
         lignes = stoi(ligne);
     }
@@ -57,7 +54,6 @@ bool lireDimensions(const string& cheminFichier, int& lignes, int& colonnes) {
         return false;
     }
 
-	// association de la deuxiéme ligne pour les colonnes
     if (getline(fichier, ligne)) {
         colonnes = stoi(ligne);
     }
@@ -78,14 +74,13 @@ bool lireTableauDepuisFichier(const string& cheminFichier, bool* tableau, int li
     string ligne;
     int index = 0;
 
-	// sa saute les 2 premieres lignes car la on  cherche a lire le tableau 
     for (int i = 0; i < 2; ++i) {
         if (!getline(fichier, ligne)) {
             cerr << "Gros con le fichier TXT est vide" << endl;
             return false;
         }
     }
-    // début de la lecture du tableau
+
     for (int i = 0; i < lignes; ++i) {
         if (getline(fichier, ligne)) {
             stringstream ss(ligne);
@@ -100,13 +95,54 @@ bool lireTableauDepuisFichier(const string& cheminFichier, bool* tableau, int li
                 }
             }
         }
-        else {             
+        else {
             cerr << "bon ton fichier est vide FDP" << endl;
-
             return false;
-        } 
+        }
     }
     return true;
+}
+
+int countNeighbors(bool* grill, int lignes, int colonnes, int x, int y) {
+    int count = 0;
+    int directions[8][2] = {
+        {-1, -1}, {-1, 0}, {-1, 1},
+        {0, -1},          {0, 1},
+        {1, -1},  {1, 0}, {1, 1}
+    };
+
+    for (auto& dir : directions) {
+        int nx = x + dir[0];
+        int ny = y + dir[1];
+        if (nx >= 0 && nx < lignes && ny >= 0 && ny < colonnes) {
+            count += grill[nx * colonnes + ny];
+        }
+    }
+    return count;
+}
+
+void updateGrid(bool* grill, int lignes, int colonnes) {
+    bool* newGrid = new bool[lignes * colonnes];
+
+    for (int i = 0; i < lignes; ++i) {
+        for (int j = 0; j < colonnes; ++j) {
+            int index = i * colonnes + j;
+            int neighbors = countNeighbors(grill, lignes, colonnes, i, j);
+
+            if (grill[index]) {
+                newGrid[index] = (neighbors == 2 || neighbors == 3);
+            }
+            else {
+                newGrid[index] = (neighbors == 3);
+            }
+        }
+    }
+
+    for (int i = 0; i < lignes * colonnes; ++i) {
+        grill[i] = newGrid[i];
+    }
+
+    delete[] newGrid;
 }
 
 int main() {
@@ -119,15 +155,19 @@ int main() {
 
     bool* tableau = creationTableau(lignes, colonnes);
 
-    lireTableauDepuisFichier(cheminFichier, tableau, lignes, colonnes);
+    if (!lireTableauDepuisFichier(cheminFichier, tableau, lignes, colonnes)) {
+        delete[] tableau;
+        return -1;
+    }
 
     affichageTableauClassic(tableau, lignes, colonnes);
 
-	changerValeur(tableau, 10);
+    for (int step = 0; step < 100; ++step) {
+        updateGrid(tableau, lignes, colonnes);
+        affichageTableauClassic(tableau, lignes, colonnes);
+        Sleep(1000); // Pause de 2000 millisecondes (2 secondes)
+    }
 
-    affichageTableauBool(tableau, lignes, colonnes);
-
-    
     delete[] tableau;
     return 0;
 }
