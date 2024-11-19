@@ -1,7 +1,7 @@
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <sstream>
+#include <iostream> // Nécessaire pour les entrées/sorties
+#include <fstream> // Nécessaire pour lire les valeurs du fichier
+#include <string>  // nécessaire pour les chaînes de caractères
+#include <sstream>  // nécessaire pour les flux de chaînes de caractères
 #include <windows.h> // Nécessaire pour Sleep sous Windows
 using namespace std;
 
@@ -54,7 +54,7 @@ bool lireDimensions(const string& cheminFichier, int& lignes, int& colonnes) {
         return false;
     }
 
-    if (getline(fichier, ligne)) {
+    if (getline(fichier, ligne)) { 
         colonnes = stoi(ligne);
     }
     else {
@@ -101,52 +101,84 @@ bool lireTableauDepuisFichier(const string& cheminFichier, bool* tableau, int li
         }
     }
     return true;
-}
+} // 
 
-int countNeighbors(bool* grill, int lignes, int colonnes, int x, int y) {
-    int count = 0;
-    int directions[8][2] = {
-        {-1, -1}, {-1, 0}, {-1, 1},
-        {0, -1},          {0, 1},
-        {1, -1},  {1, 0}, {1, 1}
+int VérificationVoisin(bool* grill, int lignes, int colonnes, int x, int y) { // Vérifie le nombre de voisins vivants
+	int compteurDeVoisinVivant = 0; // Compteur de voisins vivants
+	int directions[8][2] = { // Tableau des directions des voisins
+		{-1, -1}, {-1, 0}, {-1, 1}, // Haut
+		{0, -1},          {0, 1}, // Gauche et Droite
+		{1, -1},  {1, 0}, {1, 1} // Bas
     };
 
-    for (auto& dir : directions) {
-        int nx = x + dir[0];
-        int ny = y + dir[1];
-        if (nx >= 0 && nx < lignes && ny >= 0 && ny < colonnes) {
-            count += grill[nx * colonnes + ny];
+	for (auto& dir : directions) { // Parcours de toutes les directions
+		int NouvellePositionX = x + dir[0]; // Nouvelle position x
+		int NouvellePositionY = y + dir[1]; // nouvelle position y
+		if (NouvellePositionX >= 0 && NouvellePositionX < lignes && NouvellePositionY >= 0 && NouvellePositionY < colonnes) { // Vérifie si la nouvelle position est dans les limites du tableau
+            compteurDeVoisinVivant += grill[NouvellePositionX * colonnes + NouvellePositionY]; // Ajoute la valeur de la cellule à la somme
         }
     }
-    return count;
+    return compteurDeVoisinVivant;
 }
 
-void updateGrid(bool* grill, int lignes, int colonnes) {
-    bool* newGrid = new bool[lignes * colonnes];
 
-    for (int i = 0; i < lignes; ++i) {
-        for (int j = 0; j < colonnes; ++j) {
-            int index = i * colonnes + j;
-            int neighbors = countNeighbors(grill, lignes, colonnes, i, j);
+void historiqueGrill(bool* grill, int lignes, int colonnes, string cheminFichierHistorique) {
+	ofstream fichier(cheminFichierHistorique, std::ios::app); // Ouvre le fichier en mode ajout
 
-            if (grill[index]) {
-                newGrid[index] = (neighbors == 2 || neighbors == 3);
+    if (!fichier) {
+        cerr << "Erreur lors de l'ouverture du fichier.\n";
+        return;
+    }
+
+    // Construire la chaîne de caractères à écrire
+	string contenu = "Tableau de taille " + to_string(lignes) + "x" + to_string(colonnes) + " :\n"; // Ajoute la taille du tableau donc genre la premiere ligne de base
+	fichier.write(contenu.c_str(), contenu.size()); // Écrit la chaîne de caractères dans le fichier
+
+	for (int i = 0; i < lignes; ++i) { // Parcours de toutes les lignes
+		contenu.clear(); // Nettoie la chaîne de caractères
+		for (int j = 0; j < colonnes; ++j) { // Parcours de toutes les colonnes
+			contenu += to_string(grill[i * colonnes + j]) + " "; // Ajoute la valeur de la cellule à la chaîne de caractères
+        }
+		contenu += "\n";// Ajoute un retour à la ligne à la fin de la ligne
+		fichier.write(contenu.c_str(), contenu.size()); // Écrit la chaîne de caractères dans le fichier
+    }
+
+	fichier.write("\n", 1); // Ajoute une ligne vide pour séparer les matrices dans le fichier
+
+    fichier.close(); // Fermer le fichier
+}
+
+void MiseAjourGrill(bool* grill, int lignes, int colonnes) {
+	bool* GrillTemporaire = new bool[lignes * colonnes]; // Crée un tableau temporaire pour stocker les nouvelles valeurs
+
+	for (int i = 0; i < lignes; ++i) { // Parcours de toutes les cellules
+		for (int j = 0; j < colonnes; ++j) { // Parcours de toutes les cellules
+			int emplacement = i * colonnes + j; // emplacement de la cellule actuelle
+			int voisins = VérificationVoisin(grill, lignes, colonnes, i, j); // Vérifie le nombre de voisins vivants
+
+            if (grill[emplacement]) {
+                GrillTemporaire[emplacement] = (voisins == 2 || voisins == 3); // Si la cellule est vivante et a 2 ou 3 voisins elle reste vivante
             }
             else {
-                newGrid[index] = (neighbors == 3);
+                GrillTemporaire[emplacement] = (voisins == 3); // Si la cellule est morte et a 3 voisins elle devient vivante
             }
         }
     }
-
-    for (int i = 0; i < lignes * colonnes; ++i) {
-        grill[i] = newGrid[i];
+	for (int i = 0; i < lignes * colonnes; ++i) { // Copie les nouvelles valeurs dans le tableau principal
+		grill[i] = GrillTemporaire[i]; // Copie les nouvelles valeurs dans le tableau principal
     }
 
-    delete[] newGrid;
+	historiqueGrill(GrillTemporaire, lignes, colonnes, "C:\\Users\\methe\\source\\repos\\jeux de la vie\\historique.txt"); // Sauvegarde le tableau dans un fichier historique
+
+	delete[] GrillTemporaire; // Supprime le tableau temporaire GrillTemporaire
 }
+
+Z
 
 int main() {
     string cheminFichier = "C:\\Users\\methe\\source\\repos\\jeux de la vie\\test.txt";
+    string cheminFichierHistorique = "C:\\Users\\methe\\source\\repos\\jeux de la vie\\historique.txt";
+
     int lignes = 0, colonnes = 0;
 
     if (!lireDimensions(cheminFichier, lignes, colonnes)) {
@@ -160,14 +192,16 @@ int main() {
         return -1;
     }
 
-    affichageTableauClassic(tableau, lignes, colonnes);
+	affichageTableauClassic(tableau, lignes, colonnes); // affiche le tableau en console avec des 0 ou des 1
+
+
 
     for (int step = 0; step < 100; ++step) {
-        updateGrid(tableau, lignes, colonnes);
+        MiseAjourGrill(tableau, lignes, colonnes);
         affichageTableauClassic(tableau, lignes, colonnes);
-        Sleep(1000); // Pause de 2000 millisecondes (2 secondes)
+        Sleep(1000); // Pause de 2000 millisecondes (2 secondes) donc l'affichage est en 0.5 fps
     }
 
-    delete[] tableau;
+	delete[] tableau; // Supprime le tableau 
     return 0;
 }
