@@ -1,0 +1,207 @@
+#include <iostream> // Nécessaire pour les entrées/sorties
+#include <fstream> // Nécessaire pour lire les valeurs du fichier
+#include <string>  // nécessaire pour les chaînes de caractères
+#include <sstream>  // nécessaire pour les flux de chaînes de caractères
+#include <windows.h> // Nécessaire pour Sleep sous Windows
+using namespace std;
+
+bool* creationTableau(int a, int b) {
+    bool* grill = new bool[a * b](); // crée le tableau et initialise tout à false
+    return grill;
+}
+
+bool changerValeur(bool* grill, int emplacement) {
+    // Change la valeur de l'emplacement spécifié
+    grill[emplacement] = !grill[emplacement]; // Inversion de la valeur pour montrer le changement
+    return grill[emplacement];
+}
+
+void affichageTableauClassic(bool* grill, int lignes, int colonnes) {
+    system("cls");
+    cout << "Tableau de taille " << lignes << "x" << colonnes << " :\n";
+    for (int i = 0; i < lignes; ++i) {
+        for (int j = 0; j < colonnes; ++j) {
+            cout << grill[i * colonnes + j] << " ";
+        }
+        cout << endl;
+    }
+}
+
+void affichageTableauBool(bool* grill, int lignes, int colonnes) {
+    system("cls");
+    cout << "Tableau de taille " << lignes << "x" << colonnes << " :\n";
+    for (int i = 0; i < lignes; ++i) {
+        for (int j = 0; j < colonnes; ++j) {
+            cout << (grill[i * colonnes + j] ? "true " : "false ");
+        }
+        cout << endl;
+    }
+}
+
+bool lireDimensions(const string& cheminFichier, int& lignes, int& colonnes) {
+    ifstream fichier(cheminFichier);
+    if (!fichier.is_open()) {
+        cerr << "FDP ferme le fichier" << endl;
+        return false;
+    }
+
+    string ligne;
+    if (getline(fichier, ligne)) {
+        lignes = stoi(ligne);
+    }
+    else {
+        cerr << "Bon la premiére ligne est vide ou pas bonne" << endl;
+        return false;
+    }
+
+    if (getline(fichier, ligne)) { 
+        colonnes = stoi(ligne);
+    }
+    else {
+        cerr << "Bon la deuxiéme ligne est vide ou pas bonne" << endl;
+        return false;
+    }
+
+    return true;
+}
+
+bool lireTableauDepuisFichier(const string& cheminFichier, bool* tableau, int lignes, int colonnes) {
+    ifstream fichier(cheminFichier);
+    if (!fichier.is_open()) {
+        cerr << "ferme le fichier ou tu la suprimer" << endl;
+        return false;
+    }
+    string ligne;
+    int index = 0;
+
+    for (int i = 0; i < 2; ++i) {
+        if (!getline(fichier, ligne)) {
+            cerr << "Gros con le fichier TXT est vide" << endl;
+            return false;
+        }
+    }
+
+    for (int i = 0; i < lignes; ++i) {
+        if (getline(fichier, ligne)) {
+            stringstream ss(ligne);
+            for (int j = 0; j < colonnes; ++j) {
+                int valeur;
+                if (ss >> valeur) {
+                    tableau[index++] = valeur;
+                }
+                else {
+                    cerr << "gros con ta pas mis le tableau dans le fichier txt " << endl;
+                    return false;
+                }
+            }
+        }
+        else {
+            cerr << "bon ton fichier est vide FDP" << endl;
+            return false;
+        }
+    }
+    return true;
+} // 
+
+int VérificationVoisin(bool* grill, int lignes, int colonnes, int x, int y) { // Vérifie le nombre de voisins vivants
+	int compteurDeVoisinVivant = 0; // Compteur de voisins vivants
+	int directions[8][2] = { // Tableau des directions des voisins
+		{-1, -1}, {-1, 0}, {-1, 1}, // Haut
+		{0, -1},          {0, 1}, // Gauche et Droite
+		{1, -1},  {1, 0}, {1, 1} // Bas
+    };
+
+	for (auto& dir : directions) { // Parcours de toutes les directions
+		int NouvellePositionX = x + dir[0]; // Nouvelle position x
+		int NouvellePositionY = y + dir[1]; // nouvelle position y
+		if (NouvellePositionX >= 0 && NouvellePositionX < lignes && NouvellePositionY >= 0 && NouvellePositionY < colonnes) { // Vérifie si la nouvelle position est dans les limites du tableau
+            compteurDeVoisinVivant += grill[NouvellePositionX * colonnes + NouvellePositionY]; // Ajoute la valeur de la cellule à la somme
+        }
+    }
+    return compteurDeVoisinVivant;
+}
+
+
+void historiqueGrill(bool* grill, int lignes, int colonnes, string cheminFichierHistorique) {
+	ofstream fichier(cheminFichierHistorique, std::ios::app); // Ouvre le fichier en mode ajout
+
+    if (!fichier) {
+        cerr << "Erreur lors de l'ouverture du fichier.\n";
+        return;
+    }
+
+    // Construire la chaîne de caractères à écrire
+	string contenu = "Tableau de taille " + to_string(lignes) + "x" + to_string(colonnes) + " :\n"; // Ajoute la taille du tableau donc genre la premiere ligne de base
+	fichier.write(contenu.c_str(), contenu.size()); // Écrit la chaîne de caractères dans le fichier
+
+	for (int i = 0; i < lignes; ++i) { // Parcours de toutes les lignes
+		contenu.clear(); // Nettoie la chaîne de caractères
+		for (int j = 0; j < colonnes; ++j) { // Parcours de toutes les colonnes
+			contenu += to_string(grill[i * colonnes + j]) + " "; // Ajoute la valeur de la cellule à la chaîne de caractères
+        }
+		contenu += "\n";// Ajoute un retour à la ligne à la fin de la ligne
+		fichier.write(contenu.c_str(), contenu.size()); // Écrit la chaîne de caractères dans le fichier
+    }
+
+	fichier.write("\n", 1); // Ajoute une ligne vide pour séparer les matrices dans le fichier
+
+    fichier.close(); // Fermer le fichier
+}
+
+void MiseAjourGrill(bool* grill, int lignes, int colonnes) {
+	bool* GrillTemporaire = new bool[lignes * colonnes]; // Crée un tableau temporaire pour stocker les nouvelles valeurs
+
+	for (int i = 0; i < lignes; ++i) { // Parcours de toutes les cellules
+		for (int j = 0; j < colonnes; ++j) { // Parcours de toutes les cellules
+			int emplacement = i * colonnes + j; // emplacement de la cellule actuelle
+			int voisins = VérificationVoisin(grill, lignes, colonnes, i, j); // Vérifie le nombre de voisins vivants
+
+            if (grill[emplacement]) {
+                GrillTemporaire[emplacement] = (voisins == 2 || voisins == 3); // Si la cellule est vivante et a 2 ou 3 voisins elle reste vivante
+            }
+            else {
+                GrillTemporaire[emplacement] = (voisins == 3); // Si la cellule est morte et a 3 voisins elle devient vivante
+            }
+        }
+    }
+	for (int i = 0; i < lignes * colonnes; ++i) { // Copie les nouvelles valeurs dans le tableau principal
+		grill[i] = GrillTemporaire[i]; // Copie les nouvelles valeurs dans le tableau principal
+    }
+
+	historiqueGrill(GrillTemporaire, lignes, colonnes, "C:\\Users\\methe\\source\\repos\\jeux de la vie\\historique.txt"); // Sauvegarde le tableau dans un fichier historique
+
+	delete[] GrillTemporaire; // Supprime le tableau temporaire GrillTemporaire
+}
+
+
+
+int main() {
+    string cheminFichier = "C:\\Users\\methe\\source\\repos\\jeux de la vie\\test.txt";
+    string cheminFichierHistorique = "C:\\Users\\methe\\source\\repos\\jeux de la vie\\historique.txt";
+
+    int lignes = 0, colonnes = 0;
+
+    if (!lireDimensions(cheminFichier, lignes, colonnes)) {
+        return -1;
+    }
+
+    bool* tableau = creationTableau(lignes, colonnes);
+
+    if (!lireTableauDepuisFichier(cheminFichier, tableau, lignes, colonnes)) {
+        delete[] tableau;
+        return -1;
+    }
+
+	affichageTableauClassic(tableau, lignes, colonnes); // affiche le tableau en console avec des 0 ou des 1
+
+
+
+    for (int step = 0; step < 100; ++step) {
+        MiseAjourGrill(tableau, lignes, colonnes);
+        affichageTableauClassic(tableau, lignes, colonnes);
+        Sleep(1000); // Pause de 2000 millisecondes (2 secondes) donc l'affichage est en 0.5 fps
+    }
+
+	delete[] tableau; // Supprime le tableau 
+    return 0;
+}
