@@ -130,6 +130,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Bouton.cpp" />
     <ClCompile Include="Fenetre.cpp" />
     <ClCompile Include="fichier.cpp" />
     <ClCompile Include="grille.cpp" />
@@ -137,6 +138,7 @@
     <ClCompile Include="jeu.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bouton.h" />
     <ClInclude Include="Fenetre.h" />
     <ClInclude Include="fichier.h" />
     <ClInclude Include="grille.h" />

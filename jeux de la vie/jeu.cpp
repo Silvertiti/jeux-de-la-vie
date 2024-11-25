@@ -16,6 +16,7 @@ Jeu::~Jeu() {
 }
 
 void Jeu::bouclePrincipale() {
+	sf::Clock clock; // Pour mesurer le temps écoulé
     while (fenetre.getWindow().isOpen()) {
         fenetre.gererEvenements();
 
@@ -28,6 +29,10 @@ void Jeu::bouclePrincipale() {
         fenetre.afficherPause();
         fenetre.getWindow().display();
 
-        if (!fenetre.estPause()) sf::sleep(sf::seconds(1));
+
+        sf::Time elapsed1 = clock.getElapsedTime();
+        std::cout << elapsed1.asSeconds()  << std::endl;
+        clock.restart();
     }
 }
+    

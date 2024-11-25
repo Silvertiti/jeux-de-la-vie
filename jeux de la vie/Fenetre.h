@@ -3,17 +3,17 @@
 
 #include <SFML/Graphics.hpp>
 #include <string>
+#include "Bouton.h"
 
 class Fenetre {
 private:
     sf::RenderWindow window;
+    Bouton avancer;
     sf::RectangleShape boutonPause;
-    sf::RectangleShape boutonAvancer;
     sf::Text textePause;
-    sf::Text texteAvancer;
     sf::Font font;
     bool pause;
-    bool avancer;
+    //bool avancer;
 
 public:
     Fenetre(int largeur, int hauteur, const std::string& titre);
@@ -22,5 +22,6 @@ public:
     void gererEvenements();
     void afficherPause();
 };
+
 
 #endif
