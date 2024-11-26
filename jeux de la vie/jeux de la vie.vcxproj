@@ -136,6 +136,7 @@
     <ClCompile Include="grille.cpp" />
     <ClCompile Include="jeux de la vie.cpp" />
     <ClCompile Include="jeu.cpp" />
+    <ClCompile Include="slider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bouton.h" />

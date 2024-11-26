@@ -16,13 +16,21 @@ Jeu::~Jeu() {
 }
 
 void Jeu::bouclePrincipale() {
-	sf::Clock clock; // Pour mesurer le temps écoulé
+    sf::Clock clock;
+    float delay = 0.9f;  //c la val de la vitesse
+
     while (fenetre.getWindow().isOpen()) {
         fenetre.gererEvenements();
 
+
         if (!fenetre.estPause()) {
-            grille->mettreAJour();
+
+            if (clock.getElapsedTime().asSeconds() >= delay) {
+                grille->mettreAJour();
+                clock.restart();
+            }
         }
+
 
         fenetre.getWindow().clear(sf::Color::White);
         grille->afficher(fenetre.getWindow(), cellSize);
@@ -30,9 +38,7 @@ void Jeu::bouclePrincipale() {
         fenetre.getWindow().display();
 
 
-        sf::Time elapsed1 = clock.getElapsedTime();
-        std::cout << elapsed1.asSeconds()  << std::endl;
-        clock.restart();
+        //sf::Time elapsed = clock.getElapsedTime();
+        //std::cout << "Temps : " << elapsed.asSeconds() << " secondes" << std::endl;
     }
 }
-    

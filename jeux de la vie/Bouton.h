@@ -3,30 +3,20 @@
 
 #include <SFML/Graphics.hpp>
 #include <string>
-#include <iostream>
-#include <string>
-#include <SFML/Graphics.hpp>
 
 class Bouton {
+public:
+    Bouton(const std::string& texte);
+    ~Bouton();
+
+    void setPosition(int x, int y);
+    void setBackgroundColor(sf::Color c);
+    void afficher(sf::RenderWindow& window);
 
 private:
-	sf::RenderWindow window;
-	sf::RectangleShape fond;
-	sf::Text text;
-	sf::Font font;
-
-
-public:
-	Bouton(const std::string& String);
-	~Bouton();
-
-	void setPosition(int x, int y);
-	void setBackgroundColor(sf::Color c);
-
-	void afficher(sf::RenderWindow& window);
-
-
+    sf::RectangleShape fond;
+    sf::Text text;
+    sf::Font font;
 };
 
-
-#endif
+#endif // BOUTON_H

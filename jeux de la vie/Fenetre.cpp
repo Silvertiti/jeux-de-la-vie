@@ -1,25 +1,26 @@
 #include "Fenetre.h"
 #include <iostream>
-#include "Grille.h"
-#include "grille.h"
+#include "Grille.h" 
 
-
-
-Fenetre::Fenetre(int largeur, int hauteur, const std::string& titre) 
-    : pause(false), 
-    avancer("Avancer")
+Fenetre::Fenetre(int largeur, int hauteur, const std::string& titre)
+    : pause(false),
+    avancer("Avancer"),
+    avancerRapide("Avancer rapide")
 {
     window.create(sf::VideoMode(largeur, hauteur), titre);
 
-    avancer.setPosition(100, 100);
-	avancer.setBackgroundColor(sf::Color::Green);
-   
+
+    avancer.setPosition(150, hauteur - 45);
+    avancer.setBackgroundColor(sf::Color::Green);
+
+
+    avancerRapide.setPosition(250, hauteur - 45);
+    avancerRapide.setBackgroundColor(sf::Color::Red);
+
 
     boutonPause.setSize(sf::Vector2f(100, 40));
     boutonPause.setFillColor(sf::Color(200, 200, 200));
     boutonPause.setPosition(10, hauteur - 45);
-
-
 
     if (!font.loadFromFile("arial.ttf")) {
         std::cerr << "Erreur : Impossible de charger la police." << std::endl;
@@ -31,9 +32,8 @@ Fenetre::Fenetre(int largeur, int hauteur, const std::string& titre)
     textePause.setFillColor(sf::Color::Black);
     textePause.setPosition(15, hauteur - 40);
     textePause.setString("Pause");
-
-
 }
+
 
 sf::RenderWindow& Fenetre::getWindow() {
     return window;
@@ -57,20 +57,15 @@ void Fenetre::gererEvenements() {
                 textePause.setString(pause ? "Play" : "Pause");
 
             }
-            //if (boutonAvancer.getGlobalBounds().contains(mousePos)) {
-
-           // }
 
         }
     }
-};
-void Fenetre::afficherPause() {
-    //window.draw(boutonPause);
-	//window.draw(textePause);
-	if (pause) {
-		//window.draw(boutonAvancer);
-		//window.draw(texteAvancer);
-	}
-	avancer.afficher(window);
 }
-
+void Fenetre::afficherPause() {
+    if (pause) {
+        avancer.afficher(window);
+        avancerRapide.afficher(window);
+    }
+    window.draw(boutonPause);
+    window.draw(textePause);
+}

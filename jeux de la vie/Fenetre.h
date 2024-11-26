@@ -9,11 +9,12 @@ class Fenetre {
 private:
     sf::RenderWindow window;
     Bouton avancer;
+    Bouton avancerRapide;
+
     sf::RectangleShape boutonPause;
     sf::Text textePause;
     sf::Font font;
     bool pause;
-    //bool avancer;
 
 public:
     Fenetre(int largeur, int hauteur, const std::string& titre);
@@ -22,6 +23,5 @@ public:
     void gererEvenements();
     void afficherPause();
 };
-
 
 #endif
