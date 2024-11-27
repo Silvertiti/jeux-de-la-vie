@@ -53,5 +53,8 @@
     <ClInclude Include="Bouton.h">
       <Filter>Fichiers sources</Filter>
     </ClInclude>
+    <ClInclude Include="slider.h">
+      <Filter>Fichiers sources</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

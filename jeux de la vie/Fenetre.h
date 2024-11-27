@@ -4,12 +4,14 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include "Bouton.h"
+#include "Slider.h"
 
 class Fenetre {
 private:
     sf::RenderWindow window;
     Bouton avancer;
     Bouton avancerRapide;
+    Slider slider;
 
     sf::RectangleShape boutonPause;
     sf::Text textePause;
@@ -24,4 +26,4 @@ public:
     void afficherPause();
 };
 
-#endif
+#endif // FENETRE_H

@@ -3,7 +3,8 @@
 #include <SFML/System.hpp>
 
 Jeu::Jeu(const std::string& cheminFichier, int lignes, int colonnes, float cellSize)
-    : lignes(lignes), colonnes(colonnes), cellSize(cellSize), fenetre(colonnes* cellSize, lignes* cellSize + 50, "Jeu de la Vie - SFML") {
+    : lignes(lignes), colonnes(colonnes), cellSize(cellSize),
+    fenetre(900, 800, "Jeu de la Vie - SFML") {
     grille = new Grille(lignes, colonnes);
     if (!grille->initialiserDepuisFichier(cheminFichier)) {
         std::cerr << "Erreur : Impossible de lire la grille." << std::endl;
@@ -17,28 +18,27 @@ Jeu::~Jeu() {
 
 void Jeu::bouclePrincipale() {
     sf::Clock clock;
-    float delay = 0.9f;  //c la val de la vitesse
+    float delay = 0.9f;
 
     while (fenetre.getWindow().isOpen()) {
-        fenetre.gererEvenements();
-
+        fenetre.gererEvenements(); // Capturer les événements
 
         if (!fenetre.estPause()) {
-
             if (clock.getElapsedTime().asSeconds() >= delay) {
                 grille->mettreAJour();
                 clock.restart();
             }
         }
 
-
         fenetre.getWindow().clear(sf::Color::White);
+
+        // Dessiner la grille
         grille->afficher(fenetre.getWindow(), cellSize);
+
+        // Dessiner les éléments dans la bande droite
+        fenetre.getWindow().setView(fenetre.getWindow().getDefaultView());
         fenetre.afficherPause();
+
         fenetre.getWindow().display();
-
-
-        //sf::Time elapsed = clock.getElapsedTime();
-        //std::cout << "Temps : " << elapsed.asSeconds() << " secondes" << std::endl;
     }
 }

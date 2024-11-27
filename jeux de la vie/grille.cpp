@@ -70,3 +70,4 @@ void Grille::afficher(sf::RenderWindow& window, float cellSize) {
         window.draw(line, 2, sf::Lines);
     }
 }
+
