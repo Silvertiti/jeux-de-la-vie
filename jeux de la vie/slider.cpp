@@ -44,8 +44,17 @@ void Slider::handleEvent(const sf::Event& event, const sf::RenderWindow& window)
               //  << " | Position Y : " << y << std::endl;
         }
     }
+ 
+    }
 
-    /*void createSlider(); {
+float Slider::getCurrentValue() const {
+    return currentValue;
+}
+    
+
+
+
+/*void createSlider(); {
         sf::RenderWindow window(sf::VideoMode(800, 600), "Slider Vertical Corrigé");
 
         Slider slider(400, 100, 400, 0, 100);  // Slider vertical de 0 à 100
@@ -67,6 +76,6 @@ void Slider::handleEvent(const sf::Event& event, const sf::RenderWindow& window)
 
 
     //OUVRE TROP D'ONGLET OR ON VEUT QUE CELA S'AFFICHE SUR LA FENTRE DU JEU 
-};
+
 
 

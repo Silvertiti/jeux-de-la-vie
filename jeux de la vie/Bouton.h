@@ -12,6 +12,7 @@ public:
     void setPosition(int x, int y);
     void setBackgroundColor(sf::Color c);
     void afficher(sf::RenderWindow& window);
+    bool estClique(const sf::Vector2i& mousePos) const;
 
 private:
     sf::RectangleShape fond;

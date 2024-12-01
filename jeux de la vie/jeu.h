@@ -11,7 +11,7 @@ private:
     int lignes, colonnes;
     float cellSize;
     Fenetre fenetre;
-
+    bool avanceUnique; //avancer d'une itération
 public:
     Jeu(const std::string& cheminFichier, int lignes, int colonnes, float cellSize);
     ~Jeu();

@@ -20,7 +20,7 @@ public:
     void handleEvent(const sf::Event& event, const sf::RenderWindow& window);
 
 
-    float getValue() const { return currentValue; }
+    float getCurrentValue() const;
 };
 
 #endif // SLIDER_H

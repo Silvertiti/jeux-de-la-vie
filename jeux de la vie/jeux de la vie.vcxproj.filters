@@ -36,6 +36,9 @@
     <ClCompile Include="slider.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="DragDrop.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="jeu.h">
@@ -54,6 +57,9 @@
       <Filter>Fichiers sources</Filter>
     </ClInclude>
     <ClInclude Include="slider.h">
+      <Filter>Fichiers sources</Filter>
+    </ClInclude>
+    <ClInclude Include="DragDrop.h">
       <Filter>Fichiers sources</Filter>
     </ClInclude>
   </ItemGroup>

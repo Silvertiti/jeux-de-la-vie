@@ -51,3 +51,7 @@ void Bouton::afficher(sf::RenderWindow& window) {
     window.draw(fond);
     window.draw(text);
 }
+
+bool Bouton::estClique(const sf::Vector2i& mousePos) const {
+    return fond.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+}

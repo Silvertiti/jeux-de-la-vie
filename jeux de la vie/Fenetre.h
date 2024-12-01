@@ -11,7 +11,8 @@ private:
     sf::RenderWindow window;
     Bouton avancer;
     Bouton avancerRapide;
-    Slider slider;
+    Slider slider1; // vitesse
+    Slider slider2; // zoom
 
     sf::RectangleShape boutonPause;
     sf::Text textePause;
@@ -24,6 +25,8 @@ public:
     bool estPause() const;
     void gererEvenements();
     void afficherPause();
+    const Slider& getSlider2() const;
+    const Slider& getSlider1() const;
 };
 
 #endif // FENETRE_H

@@ -1,4 +1,5 @@
 #include "Jeu.h"
+#include "slider.h"
 #include <iostream>
 #include <SFML/System.hpp>
 
@@ -18,24 +19,35 @@ Jeu::~Jeu() {
 
 void Jeu::bouclePrincipale() {
     sf::Clock clock;
-    float delay = 0.9f;
+    float delay = fenetre.getSlider1().getCurrentValue(); // Ajout de la valeur du slider
+    if (clock.getElapsedTime().asSeconds() >= delay) {
+        grille->mettreAJour();
+        clock.restart();
+    }
 
     while (fenetre.getWindow().isOpen()) {
-        fenetre.gererEvenements(); // Capturer les événements
+        fenetre.gererEvenements(); 
 
-        if (!fenetre.estPause()) {
-            if (clock.getElapsedTime().asSeconds() >= delay) {
-                grille->mettreAJour();
-                clock.restart();
-            }
+        
+        float delay = fenetre.getSlider1().getCurrentValue();    // Slider vitesse
+        float zoomLevel = fenetre.getSlider2().getCurrentValue(); // Slider zoom
+
+       
+        sf::View view = fenetre.getWindow().getView();
+        view.setSize(900 / zoomLevel, 800 / zoomLevel); // Ajustement basé sur zoom
+        fenetre.getWindow().setView(view);
+
+        if (!fenetre.estPause() && clock.getElapsedTime().asSeconds() >= delay) {
+            grille->mettreAJour();
+            clock.restart();
         }
 
         fenetre.getWindow().clear(sf::Color::White);
 
-        // Dessiner la grille
+        // dessiner lz grille
         grille->afficher(fenetre.getWindow(), cellSize);
 
-        // Dessiner les éléments dans la bande droite
+        // affiche pause et sliders
         fenetre.getWindow().setView(fenetre.getWindow().getDefaultView());
         fenetre.afficherPause();
 
