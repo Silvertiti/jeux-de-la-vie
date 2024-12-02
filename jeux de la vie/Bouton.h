@@ -14,11 +14,11 @@ private:
 public:
     Bouton(const std::string& texte);
     ~Bouton();
-
-    void setPosition(int x, int y);
-    void setBackgroundColor(sf::Color c);
-    void afficher(sf::RenderWindow& window);
-    bool estClique(const sf::Vector2i& mousePos) const; //pour implémentation avancer une iter
+//fonction pour le bouton  
+    void setPosition(int x, int y);                         //position 
+    void setBackgroundColor(sf::Color c);                   // couleur du fond (si pas par defaut)
+    void afficher(sf::RenderWindow& window);                //afficher le bouton 
+    bool estClique(const sf::Vector2i& mousePos) const;     //cliquable ou non pour implémentation avancer une iter
 
 };
 

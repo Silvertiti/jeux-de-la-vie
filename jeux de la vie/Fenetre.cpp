@@ -14,7 +14,7 @@ const Slider& Fenetre::getSlider1() const {
 Fenetre::Fenetre(int largeur, int hauteur, const std::string& titre)
     : pause(false),
     avancer("Avancer"),
-    avancerRapide("Avancer rapide"),
+    
     slider1(largeur - 20, hauteur - 200, 150, 5.0f, 0.001f), // premier slider pour vitess
     slider2(largeur - 40 - 20, hauteur - 200, 150, 1, 100) // deuxième slider pour zoom 
 {
@@ -23,8 +23,8 @@ Fenetre::Fenetre(int largeur, int hauteur, const std::string& titre)
     avancer.setPosition(150, hauteur - 45);
     avancer.setBackgroundColor(sf::Color::Green);
 
-    avancerRapide.setPosition(250, hauteur - 45);
-    avancerRapide.setBackgroundColor(sf::Color::Red);
+    
+   
 
     boutonPause.setSize(sf::Vector2f(100, 40));
     boutonPause.setFillColor(sf::Color(200, 200, 200));
@@ -50,9 +50,6 @@ bool Fenetre::estPause() const {
     return pause;
 }
 
-
-
-
 void Fenetre::gererEvenements() {
     
     sf::Event event;
@@ -61,8 +58,6 @@ void Fenetre::gererEvenements() {
         if (event.type == sf::Event::Closed) {
             window.close();
         }
-
-         
 
         if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
             sf::Vector2f mousePos(event.mouseButton.x, event.mouseButton.y);
@@ -75,32 +70,21 @@ void Fenetre::gererEvenements() {
         slider1.handleEvent(event, window); //slider1
         slider2.handleEvent(event, window);  // tjrs voir slider2
 
-
         if (pause) {
-
-
-            
         }
     }
 }
 
 void Fenetre::afficherPause() {
-    // Afficher slider2 en permanence
-    slider2.draw(window);   
-    slider1.draw(window);// slider1 uniquement en pause
     
-    // Afficher les éléments liés à la pause uniquement si en pause
+    slider2.draw(window);                   // slider2 en permanence
+    slider1.draw(window);                   // slider1 en permanence 
+    
+    
     if (pause) {
-        avancer.afficher(window);        // Bouton avancer
-        avancerRapide.afficher(window); // bouton avancer rapide
-         
+        avancer.afficher(window);           // Bouton avancer en pause      
     }
 
-    window.draw(boutonPause); // pause
-    window.draw(textePause); // txt de pause
-
-
+    window.draw(boutonPause);               // pause
+    window.draw(textePause);                // txt de pause
 }
-
-    
-    

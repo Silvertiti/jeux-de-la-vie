@@ -10,7 +10,7 @@ class Fenetre {
 private:
     sf::RenderWindow window;
     Bouton avancer;
-    Bouton avancerRapide;
+    
     Slider slider1; // vitesse
     Slider slider2; // zoom
 

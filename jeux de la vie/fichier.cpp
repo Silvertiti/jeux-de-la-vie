@@ -16,7 +16,7 @@ bool Fichier::lireGrille(const std::string& cheminFichier, bool* tableau, int li
     std::ifstream fichier(cheminFichier);
     if (!fichier.is_open()) return false;
 
-    // Ignorer les deux premières lignes
+    // i gnorer les deux premières lignes
     std::string ligne;
     for (int i = 0; i < 2; ++i) getline(fichier, ligne);
 
