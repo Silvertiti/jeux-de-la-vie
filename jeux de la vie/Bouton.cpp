@@ -4,7 +4,7 @@
 
 Bouton::Bouton(const std::string& texte) {
 
-    // Charger la police
+    
     if (!font.loadFromFile("arial.ttf")) {
         std::cerr << "Erreur : Impossible de charger la police." << std::endl;
         exit(-1);
@@ -15,11 +15,11 @@ Bouton::Bouton(const std::string& texte) {
     text.setFillColor(sf::Color::White);
     text.setString(texte);
 
-    sf::FloatRect textBounds = text.getLocalBounds();
+    sf::FloatRect textBounds = text.getLocalBounds(); //
     float padding = 10.f; 
 
     fond.setSize(sf::Vector2f(textBounds.width + 2 * padding, textBounds.height + 2 * padding));
-    fond.setFillColor(sf::Color(100, 100, 200)); 
+    fond.setFillColor(sf::Color(100, 0, 200)); 
     fond.setPosition(0, 0);
 
     text.setPosition(fond.getPosition().x + padding, fond.getPosition().y + padding - textBounds.top);
@@ -52,6 +52,6 @@ void Bouton::afficher(sf::RenderWindow& window) {
     window.draw(text);
 }
 
-bool Bouton::estClique(const sf::Vector2i& mousePos) const {
+bool Bouton::estClique(const sf::Vector2i& mousePos) const {//pour implémentation avancer une iter
     return fond.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
 }

@@ -87,13 +87,13 @@ void Fenetre::gererEvenements() {
 void Fenetre::afficherPause() {
     // Afficher slider2 en permanence
     slider2.draw(window);   
-    slider1.draw(window);
+    slider1.draw(window);// slider1 uniquement en pause
     
     // Afficher les éléments liés à la pause uniquement si en pause
     if (pause) {
         avancer.afficher(window);        // Bouton avancer
         avancerRapide.afficher(window); // bouton avancer rapide
-         // slider1 uniquement en pause
+         
     }
 
     window.draw(boutonPause); // pause

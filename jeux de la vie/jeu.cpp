@@ -29,12 +29,12 @@ void Jeu::bouclePrincipale() {
         fenetre.gererEvenements(); 
 
         
-        float delay = fenetre.getSlider1().getCurrentValue();    // Slider vitesse
-        float zoomLevel = fenetre.getSlider2().getCurrentValue(); // Slider zoom
+        float delay = fenetre.getSlider1().getCurrentValue();    // vitesse
+        float zoomLevel = fenetre.getSlider2().getCurrentValue(); //  zoom
 
        
         sf::View view = fenetre.getWindow().getView();
-        view.setSize(900 / zoomLevel, 800 / zoomLevel); // Ajustement basé sur zoom
+        view.setSize(900 / zoomLevel, 800 / zoomLevel); 
         fenetre.getWindow().setView(view);
 
         if (!fenetre.estPause() && clock.getElapsedTime().asSeconds() >= delay) {
