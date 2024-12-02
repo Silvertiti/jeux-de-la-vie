@@ -17,7 +17,7 @@ public:
     void draw(sf::RenderWindow& window);
 
 
-    void handleEvent(const sf::Event& event, const sf::RenderWindow& window);
+    void handleEvent( sf::Event& event,  sf::RenderWindow& window);
 
 
     float getCurrentValue() const;

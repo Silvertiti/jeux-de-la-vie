@@ -19,7 +19,9 @@ Jeu::~Jeu() {
 
 void Jeu::bouclePrincipale() {
     sf::Clock clock;
+
     float delay = fenetre.getSlider1().getCurrentValue(); // Ajout de la valeur du slider
+    
     if (clock.getElapsedTime().asSeconds() >= delay) {
         grille->mettreAJour();
         clock.restart();
@@ -54,3 +56,11 @@ void Jeu::bouclePrincipale() {
         fenetre.getWindow().display();
     }
 }
+
+//void Jeu::avancerIteration() {
+    //grille->mettreAJour();
+//}
+
+//void Jeu::reculerIteration() {
+    //grille->restaurerEtat();
+//}

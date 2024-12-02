@@ -11,11 +11,17 @@ private:
     int lignes, colonnes;
     float cellSize;
     Fenetre fenetre;
-    bool avanceUnique; //avancer d'une itération
+    
+    bool pause; // Ajouté pour gérer la pause
+
 public:
     Jeu(const std::string& cheminFichier, int lignes, int colonnes, float cellSize);
     ~Jeu();
     void bouclePrincipale();
+
+    //void avancerIteration(); // Avancer d'une itération
+    //void reculerIteration(); // Reculer d'une itération
+
 };
 
 #endif 

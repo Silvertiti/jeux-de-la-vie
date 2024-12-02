@@ -3,31 +3,31 @@
 
 Slider::Slider(float x, float y, float height, float minValue, float maxValue) : minValue(minValue), maxValue(maxValue), currentValue(minValue) {
 
+    //Spec de la bar 
     bar.setSize({ 5, height });
     bar.setPosition(x - bar.getSize().x, y);
     bar.setFillColor(sf::Color::Black);
 
-
+    //Spec du curseur 
     curseur.setRadius(10);
     curseur.setOrigin(10, 10);
     curseur.setPosition(x - bar.getSize().x / 2, y);
-    curseur.setFillColor(sf::Color::Green);
+    curseur.setFillColor(sf::Color(200, 200, 200));
 }
 
-void Slider::draw(sf::RenderWindow& window) {
+void Slider::draw(sf::RenderWindow& window) {  //affichage 
     window.draw(bar);
     window.draw(curseur);
 }
 
-void Slider::handleEvent(const sf::Event& event, const sf::RenderWindow& window) {
+void Slider::handleEvent( sf::Event& event,  sf::RenderWindow& window) {
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
         sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
 
         // Vérifier si la souris est dans la zone de la piste
-        if (mousePos.x >= bar.getPosition().x &&
-            mousePos.x <= bar.getPosition().x + bar.getSize().x) {
+        if (mousePos.x >= bar.getPosition().x -10 && mousePos.x <= bar.getPosition().x + bar.getSize().x+10) { //le +10/-10 -> marge autour du slider 
 
-            // Limiter la position Y du bouton à la piste
+            // limiter pos Y du bouton à la bar
             float y = mousePos.y;
             if (y < bar.getPosition().y) y = bar.getPosition().y;
             if (y > bar.getPosition().y + bar.getSize().y) y = bar.getPosition().y + bar.getSize().y;
@@ -35,8 +35,8 @@ void Slider::handleEvent(const sf::Event& event, const sf::RenderWindow& window)
             // Déplacer le bouton
             curseur.setPosition(bar.getPosition().x + 2.5f, y);
 
-            // Calculer la valeur actuelle du slider (en fonction de sa position verticale)
-            float percent = (y - bar.getPosition().y) / bar.getSize().y;
+            
+            float percent = (y - bar.getPosition().y) / bar.getSize().y; //determiner la valeur de retour en pourcentage 
             currentValue = minValue + percent * (maxValue - minValue);
 
             // Afficher la valeur actuelle et la position
@@ -47,7 +47,7 @@ void Slider::handleEvent(const sf::Event& event, const sf::RenderWindow& window)
  
     }
 
-float Slider::getCurrentValue() const {
+float Slider::getCurrentValue() const { //utiliser pour donner une valeur def ds le constructeur 
     return currentValue;
 }
     

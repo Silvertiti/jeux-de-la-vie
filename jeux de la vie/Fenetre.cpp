@@ -3,25 +3,26 @@
 #include <iostream>
 #include "Grille.h" 
 
-const Slider& Fenetre::getSlider2() const {
+ Slider& Fenetre::getSlider2()  {
     return slider2;
 }
 
-const Slider& Fenetre::getSlider1() const {
+ Slider& Fenetre::getSlider1()  {
     return slider1;
 }
 
 Fenetre::Fenetre(int largeur, int hauteur, const std::string& titre) : 
     pause(true),
-    avancer("Avancer"), // le bouton pause -> start au lancement                                       
-    
-    slider1(largeur - 20, hauteur - 200, 150, 5.0f, 0.001f), // premier slider pour vitess
-    slider2(largeur - 40 - 20, hauteur - 200, 150, 1, 100) // deuxième slider pour zoom 
+    avancer("Avancer"),                                       
+    reculer("Reculer"),
+
+    slider1(largeur - 20, hauteur - 200, 150, 1.0f, 0.001f),        // premier slider pour vitess
+    slider2(largeur - 40 - 20, hauteur - 200, 150, 1, 100)          // deuxième slider pour zoom 
 {
     window.create(sf::VideoMode(largeur, hauteur), titre);
 
     avancer.setPosition(150, hauteur - 45);
-    //reculer.setPosition(130, hauteur - 45);
+    reculer.setPosition(280, hauteur - 45);
       
     boutonPause.setSize(sf::Vector2f(100, 40));                     //taille du rectangle du bouton 
     boutonPause.setFillColor(sf::Color(200, 200, 200));             //couleur du fond 
@@ -36,14 +37,14 @@ Fenetre::Fenetre(int largeur, int hauteur, const std::string& titre) :
     textePause.setCharacterSize(20);
     textePause.setFillColor(sf::Color::Black);
     textePause.setPosition(15, hauteur - 40);
-    textePause.setString("START");
+    textePause.setString("START");                                  // le bouton pause -> start au lancement 
 }
 
 sf::RenderWindow& Fenetre::getWindow() {                            //affichege de la fenentre 
     return window;
 }
 
-bool Fenetre::estPause() const {
+bool Fenetre::estPause() {
     return pause;
 }
 
@@ -52,15 +53,27 @@ void Fenetre::gererEvenements() {
     sf::Event event;
 
     while (window.pollEvent(event)) {
+        
         if (event.type == sf::Event::Closed) {
             window.close();
         }
 
         if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
-            sf::Vector2f mousePos(event.mouseButton.x, event.mouseButton.y);
-            if (boutonPause.getGlobalBounds().contains(mousePos)) {
+            sf::Vector2i mousePos(event.mouseButton.x, event.mouseButton.y); 
+            
+            if (reculer.estClique(mousePos)) {
+                std::cout << "Reculer d'une itération." << std::endl;
+                //implementer la fonction pour avancer 
+            }
+            
+            if (avancer.estClique(mousePos)) {
+                std::cout << "avancer d'une itération." << std::endl;
+                //implementer la fonction pour reculer
+            }
+            
+            if (boutonPause.getGlobalBounds().contains((mousePos.x), (mousePos.y))) {
                 pause = !pause;
-                textePause.setString(pause ? "Pause" : "Play");
+                textePause.setString(pause ? "Play" : "Pause");
             }
         }
         
@@ -82,10 +95,12 @@ void Fenetre::afficherPause() {
         
     if (pause) {
         avancer.afficher(window);           // Bouton avancer en pause
-        avancer.afficher(window);           // Bouton reculer en pause
+        reculer.afficher(window);           // Bouton reculer en pause
     }
 
 
     window.draw(boutonPause);               // pause
     window.draw(textePause);                // txt de pause
 }
+
+

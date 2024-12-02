@@ -71,3 +71,16 @@ void Grille::afficher(sf::RenderWindow& window, float cellSize) {
     }
 }
 
+void Grille::sauvegarderEtat() {
+    bool* copie = new bool[lignes * colonnes];
+    memcpy(copie, tableau, lignes * colonnes * sizeof(bool));
+    historique.push_back(copie);
+}
+
+void Grille::restaurerEtat() {
+    if (historique.size() > 1) {
+        delete[] tableau;
+        tableau = historique[historique.size() - 2]; // Get the previous state
+        historique.pop_back();
+    }
+}

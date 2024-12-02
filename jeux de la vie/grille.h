@@ -8,6 +8,7 @@ class Grille {
 private:
     int lignes, colonnes;
     bool* tableau;
+    std::vector<bool*> historique;
 
 public:
     Grille(int lignes, int colonnes);
@@ -17,6 +18,8 @@ public:
     int verifierVoisins(int x, int y);
     void mettreAJour();
     void afficher(sf::RenderWindow& window, float cellSize);
+    void sauvegarderEtat();
+    void restaurerEtat();
 };
 
 #endif
