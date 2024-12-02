@@ -10,11 +10,12 @@ class Fenetre {
 private:
     sf::RenderWindow window;
     Bouton avancer;
+     
     
     Slider slider1; // vitesse
     Slider slider2; // zoom
 
-    sf::RectangleShape boutonPause;
+    sf::RectangleShape boutonPause; 
     sf::Text textePause;
     sf::Font font;
     bool pause;
