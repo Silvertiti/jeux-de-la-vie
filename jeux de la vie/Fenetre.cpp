@@ -7,7 +7,7 @@ Fenetre::Fenetre(int largeur, int hauteur, const std::string& titre)
     : pause(false),
     avancer("Avancer"),
     avancerRapide("Avancer rapide"),
-    slider(largeur - 20, hauteur - 200, 150, 0, 100) // Slider
+    slider(largeur - 20, hauteur - 200, 150, 0, 1) // Slider
 {
     window.create(sf::VideoMode(largeur, hauteur), titre);
 
@@ -41,7 +41,7 @@ bool Fenetre::estPause() const {
     return pause;
 }
 
-void Fenetre::gererEvenements() {
+void  Fenetre::gererEvenements() {
     sf::Event event;
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::Closed) {
@@ -55,19 +55,17 @@ void Fenetre::gererEvenements() {
             }
         }
 
-
-        if (pause) {
-            slider.handleEvent(event, window); //slide
-        }
+        slider.handleEvent(event, window); //slider intéraction
+        
     }
 }
 
-void Fenetre::afficherPause() {
+void Fenetre::afficherPause() {  /// rename en affichage bouton
     if (pause) {
         avancer.afficher(window);
         avancerRapide.afficher(window);
-        slider.draw(window); // slider 
     }
+    slider.draw(window); // slider 
     window.draw(boutonPause);
     window.draw(textePause);
 }

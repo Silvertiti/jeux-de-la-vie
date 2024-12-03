@@ -24,6 +24,8 @@ public:
     bool estPause() const;
     void gererEvenements();
     void afficherPause();
+
+	Slider& getSlider() { return slider; }
 };
 
 #endif // FENETRE_H

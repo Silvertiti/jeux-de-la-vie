@@ -44,11 +44,17 @@ void Grille::mettreAJour() {
 }
 
 void Grille::afficher(sf::RenderWindow& window, float cellSize) {
+    //sf::View view(sf::FloatRect(0, 0, window.getSize().x, window.getSize().y));
+	//view.zoom(0.5f);    
+    //window.setView(view);
+
+    sf::Vector2f decalage(100,100);
+
     sf::RectangleShape cellule(sf::Vector2f(cellSize - 1, cellSize - 1));
 
     for (int i = 0; i < lignes; ++i) {
         for (int j = 0; j < colonnes; ++j) {
-            cellule.setPosition(j * cellSize, i * cellSize);
+            cellule.setPosition(j * cellSize+decalage.x, i * cellSize+decalage.y);
             cellule.setFillColor(tableau[i * colonnes + j] ? sf::Color::Black : sf::Color::White);
             window.draw(cellule);
         }
@@ -59,14 +65,14 @@ void Grille::afficher(sf::RenderWindow& window, float cellSize) {
     line[1].color = sf::Color::Black;
 
     for (int i = 0; i <= lignes; ++i) {
-        line[0].position = sf::Vector2f(0, i * cellSize);
-        line[1].position = sf::Vector2f(colonnes * cellSize, i * cellSize);
+        line[0].position = decalage + sf::Vector2f(0, i * cellSize);
+        line[1].position = decalage + sf::Vector2f(colonnes * cellSize, i * cellSize);
         window.draw(line, 2, sf::Lines);
     }
 
     for (int j = 0; j <= colonnes; ++j) {
-        line[0].position = sf::Vector2f(j * cellSize, 0);
-        line[1].position = sf::Vector2f(j * cellSize, lignes * cellSize);
+        line[0].position = decalage + sf::Vector2f(j * cellSize, 0);
+        line[1].position = decalage + sf::Vector2f(j * cellSize, lignes * cellSize);
         window.draw(line, 2, sf::Lines);
     }
 }

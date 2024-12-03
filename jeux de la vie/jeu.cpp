@@ -16,6 +16,7 @@ Jeu::~Jeu() {
     delete grille;
 }
 
+
 void Jeu::bouclePrincipale() {
     sf::Clock clock;
     float delay = 0.9f;
@@ -23,6 +24,7 @@ void Jeu::bouclePrincipale() {
     while (fenetre.getWindow().isOpen()) {
         fenetre.gererEvenements(); // Capturer les événements
 
+        delay = fenetre.getSlider().getValue();
         if (!fenetre.estPause()) {
             if (clock.getElapsedTime().asSeconds() >= delay) {
                 grille->mettreAJour();
