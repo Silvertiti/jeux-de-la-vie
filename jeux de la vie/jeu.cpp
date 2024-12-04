@@ -1,5 +1,4 @@
 #include "Jeu.h"
-#include "slider.h"
 #include <iostream>
 #include <SFML/System.hpp>
 
@@ -29,12 +28,7 @@ void Jeu::bouclePrincipale() {
             }
 
             // Gestion des événements liés à la fenêtre
-            fenetre.gererEvenements(event);
-
-            // Permet les clics sur la grille seulement si clicsGrilleActifs est true
-            if (fenetre.sontClicsGrilleActifs()) {
-                grille->changerCase(fenetre.getWindow(), cellSize, event);
-            }
+            fenetre.gererEvenements(event, *grille, cellSize);
         }
 
         // Récupère la valeur des sliders pour régler la vitesse et le zoom
@@ -43,7 +37,8 @@ void Jeu::bouclePrincipale() {
 
         // Met à jour la vue pour gérer le zoom
         sf::View view = fenetre.getWindow().getView();
-        view.setSize(900 / zoomLevel, 800 / zoomLevel);
+        sf::Vector2u windowSize = fenetre.getWindow().getSize();
+        view.setSize(windowSize.x / zoomLevel, windowSize.y / zoomLevel);
         fenetre.getWindow().setView(view);
 
         // Met à jour la grille si le jeu n'est pas en pause et que le délai est écoulé
@@ -54,17 +49,9 @@ void Jeu::bouclePrincipale() {
 
         // Dessine la fenêtre et ses composants
         fenetre.getWindow().clear(sf::Color::White);
-        grille->afficher(fenetre.getWindow(), cellSize);
+        grille->afficher(fenetre.getWindow(), cellSize, fenetre.getGrilleOffset());
         fenetre.getWindow().setView(fenetre.getWindow().getDefaultView());
-        fenetre.afficherPause();
+        fenetre.afficherPause(*grille, cellSize);
         fenetre.getWindow().display();
     }
 }
-
-//void Jeu::avancerIteration() {
-    //grille->mettreAJour();
-//}
-
-//void Jeu::reculerIteration() {
-    //grille->restaurerEtat();
-//}
