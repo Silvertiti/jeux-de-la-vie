@@ -17,7 +17,6 @@ Jeu::~Jeu() {
     delete grille;
 }
 
-
 void Jeu::bouclePrincipale() {
     sf::Clock clock;
 
@@ -29,22 +28,31 @@ void Jeu::bouclePrincipale() {
                 fenetre.getWindow().close();
             }
 
+            // Gestion des événements liés à la fenêtre
             fenetre.gererEvenements(event);
-            grille->changerCase(fenetre.getWindow(), cellSize, event);
+
+            // Permet les clics sur la grille seulement si clicsGrilleActifs est true
+            if (fenetre.sontClicsGrilleActifs()) {
+                grille->changerCase(fenetre.getWindow(), cellSize, event);
+            }
         }
 
+        // Récupère la valeur des sliders pour régler la vitesse et le zoom
         float delay = fenetre.getSlider1().getCurrentValue();
         float zoomLevel = fenetre.getSlider2().getCurrentValue();
 
+        // Met à jour la vue pour gérer le zoom
         sf::View view = fenetre.getWindow().getView();
         view.setSize(900 / zoomLevel, 800 / zoomLevel);
         fenetre.getWindow().setView(view);
 
+        // Met à jour la grille si le jeu n'est pas en pause et que le délai est écoulé
         if (!fenetre.estPause() && clock.getElapsedTime().asSeconds() >= delay) {
             grille->mettreAJour();
             clock.restart();
         }
 
+        // Dessine la fenêtre et ses composants
         fenetre.getWindow().clear(sf::Color::White);
         grille->afficher(fenetre.getWindow(), cellSize);
         fenetre.getWindow().setView(fenetre.getWindow().getDefaultView());

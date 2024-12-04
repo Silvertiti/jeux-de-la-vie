@@ -66,16 +66,16 @@ void Grille::changerCase(sf::RenderWindow& window, float cellSize, sf::Event& ev
 
 void Grille::afficher(sf::RenderWindow& window, float cellSize) {
     //sf::View view(sf::FloatRect(0, 0, window.getSize().x, window.getSize().y));
-	//view.zoom(0.5f);    
+    //view.zoom(0.5f);    
     //window.setView(view);
 
-    sf::Vector2f decalage(100,100);
+    sf::Vector2f decalage(100, 100);
 
     sf::RectangleShape cellule(sf::Vector2f(cellSize - 1, cellSize - 1));
 
     for (int i = 0; i < lignes; ++i) {
         for (int j = 0; j < colonnes; ++j) {
-            cellule.setPosition(j * cellSize+decalage.x, i * cellSize+decalage.y);
+            cellule.setPosition(j * cellSize + decalage.x, i * cellSize + decalage.y);
             cellule.setFillColor(tableau[i * colonnes + j] ? sf::Color::Black : sf::Color::White);
             window.draw(cellule);
         }

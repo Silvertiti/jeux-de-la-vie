@@ -18,7 +18,7 @@ Fenetre::Fenetre(int largeur, int hauteur, const std::string& titre) :
     activerClicBouton("Activer Modification"), clicsGrilleActifs(false),
 
     slider1(largeur - 20, hauteur - 200, 150, 1.0f, 0.001f),        // premier slider pour vitess
-    slider2(largeur - 40 - 20, hauteur - 200, 150, 1, 100)          // deuxième slider pour zoom 
+    slider2(largeur - 40 - 20, hauteur - 200, 150, 1, 100)          // deuxi?me slider pour zoom 
 {
     window.create(sf::VideoMode(largeur, hauteur), titre);
 
@@ -65,12 +65,12 @@ void Fenetre::gererEvenements(sf::Event& event) {
         sf::Vector2i mousePos(event.mouseButton.x, event.mouseButton.y);
 
         if (reculer.estClique(mousePos)) {
-            std::cout << "Reculer d'une itération." << std::endl;
+            std::cout << "Reculer d'une it?ration." << std::endl;
             return;
         }
 
         if (avancer.estClique(mousePos)) {
-            std::cout << "Avancer d'une itération." << std::endl;
+            std::cout << "Avancer d'une it?ration." << std::endl;
             return;
         }
 
@@ -81,8 +81,8 @@ void Fenetre::gererEvenements(sf::Event& event) {
         }
 
         if (pause && activerClicBouton.estClique(mousePos)) {
-            clicsGrilleActifs = !clicsGrilleActifs; // Active/désactive les clics
-            activerClicBouton.setString(clicsGrilleActifs ? sf::String("Désactiver Modification") : sf::String("Activer Modification"));
+            clicsGrilleActifs = !clicsGrilleActifs; // Active/d?sactive les clics
+            activerClicBouton.setString(clicsGrilleActifs ? sf::String("D?sactiver Modification") : sf::String("Activer Modification"));
         }
     }
 
