@@ -5,15 +5,21 @@ Fenetre::Fenetre(int largeur, int hauteur, const std::string& titre)
     : pause(true),
     avancer("Avancer"),
     reculer("Reculer"),
+    exporter("Exporter"),
     activerClicBouton("Activer Modification"),
     clicsGrilleActifs(false),
     slider1(static_cast<float>(largeur - 20), static_cast<float>(hauteur - 200), 150.0f, 1.0f, 0.001f),
     slider2(static_cast<float>(largeur - 60), static_cast<float>(hauteur - 200), 150.0f, 1.0f, 100.0f),
 
     grilleOffset(0.0f, 0.0f),
-    isDragging(false) {
+    isDragging(false)
+    {
 
     window.create(sf::VideoMode(largeur, hauteur), titre);
+
+    // Bouton "Exporter"
+    exporter.setPosition(100, hauteur - 60); // Positionnez le bouton
+    exporter.setBackgroundColor(sf::Color(150, 150, 255)); // Couleur du bouton
 
     // Bouton "Pause/Start"
     boutonPause.setSize(sf::Vector2f(100, 40));
@@ -120,6 +126,15 @@ void Fenetre::gererEvenements(sf::Event& event, Grille& grille, float cellSize) 
             return;
         }
 
+        if (exporter.estClique(mousePos)) {
+            if (pause) {
+                std::cout << "Exportation de la grille...\n";
+                grille.exporterGrille("grille_exportee.txt");
+            }
+            return;
+        }
+
+
         if (activerClicBouton.estClique(mousePos)) {
             clicsGrilleActifs = !clicsGrilleActifs;
             activerClicBouton.setString(clicsGrilleActifs ? "Désactiver Modification" : "Activer Modification");
@@ -166,6 +181,7 @@ void Fenetre::afficherPause(Grille& grille, float cellSize) {
         avancer.afficher(window);        // Position fixe
         reculer.afficher(window);        // Position fixe
         activerClicBouton.afficher(window); // Position fixe
+        exporter.afficher(window); // Affiche le bouton "Exporter"
     }
 
     window.draw(boutonPause);

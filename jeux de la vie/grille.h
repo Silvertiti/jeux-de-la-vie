@@ -27,6 +27,8 @@ public:
     void changerCase(sf::RenderWindow& window, float cellSize, sf::Event& event, sf::Vector2f grilleOffset);
     int getColonnes() const; // Retourne le nombre de colonnes
     int getLignes() const;   // Retourne le nombre de lignes
+    void exporterGrille(const std::string& cheminFichier) const;
+
 };
 
 

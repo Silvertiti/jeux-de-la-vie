@@ -26,6 +26,8 @@ private:
     sf::Vector2i dragStartPos;
     sf::Vector2f grilleOffset;
 
+    Bouton exporter; // Bouton pour exporter la grille
+
 public:
     Fenetre(int largeur, int hauteur, const std::string& titre);
     sf::RenderWindow& getWindow();

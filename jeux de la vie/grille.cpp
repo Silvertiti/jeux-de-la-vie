@@ -64,6 +64,25 @@ void Grille::definirCelluleIndestructible(int x, int y) {
     }
 }
 
+void Grille::exporterGrille(const std::string& cheminFichier) const {
+    std::ofstream fichier(cheminFichier);
+    if (!fichier.is_open()) {
+        std::cerr << "Erreur : Impossible d'ouvrir le fichier pour l'exportation.\n";
+        return;
+    }
+
+    for (int i = 0; i < lignes; ++i) {
+        for (int j = 0; j < colonnes; ++j) {
+            fichier << tableau[i * colonnes + j];
+        }
+        fichier << "\n";
+    }
+
+    fichier.close();
+    std::cout << "Exportation terminée vers " << cheminFichier << ".\n";
+}
+
+
 
 void Grille::definirCelluleImmortelle(int x, int y) {
     if (x >= 0 && x < lignes && y >= 0 && y < colonnes) {
