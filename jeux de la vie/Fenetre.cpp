@@ -7,7 +7,8 @@ Fenetre::Fenetre(int largeur, int hauteur, const std::string& titre)
     reculer("Reculer"),
     activerClicBouton("Activer Modification"),
     clicsGrilleActifs(false),
-    slider1(largeur - 20, hauteur - 200, 150, 1.0f, 0.001f),        // premier slider pour vitess
+    slider1(static_cast<float>(largeur - 20), static_cast<float>(hauteur - 200), 150.0f, 1.0f, 0.001f),
+    slider2(static_cast<float>(largeur - 60), static_cast<float>(hauteur - 200), 150.0f, 1.0f, 100.0f),
     grilleOffset(0.0f, 0.0f),
     isDragging(false) {
 
@@ -67,6 +68,7 @@ sf::Vector2f Fenetre::getGrilleOffset() const {
     return grilleOffset;
 }
 
+
 void Fenetre::gererEvenements(sf::Event& event, Grille& grille, float cellSize) {
     if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right) {
         isDragging = true;
@@ -85,6 +87,28 @@ void Fenetre::gererEvenements(sf::Event& event, Grille& grille, float cellSize) 
         );
         grilleOffset += offset;
         dragStartPos = currentMousePos;
+    }
+    if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+        sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+        sf::Vector2f worldPos = window.mapPixelToCoords(mousePos);
+
+        int col = static_cast<int>((worldPos.x - grilleOffset.x) / cellSize);
+        int row = static_cast<int>((worldPos.y - grilleOffset.y) / cellSize);
+
+        // Vérifier si le mode modification est actif
+        if (clicsGrilleActifs) {
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::I)) { // Mode "immortel"
+                grille.definirCelluleImmortelle(row, col);
+                std::cout << "Cellule immortelle définie à (" << row << ", " << col << ")." << std::endl;
+            }
+            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::M)) { // Mode "morte indestructible"
+                grille.definirCelluleIndestructible(row, col);
+                std::cout << "Cellule morte indestructible définie à (" << row << ", " << col << ")." << std::endl;
+            }
+            else {
+                grille.changerCase(window, cellSize, event, grilleOffset);
+            }
+        }
     }
 
     if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
@@ -107,11 +131,12 @@ void Fenetre::gererEvenements(sf::Event& event, Grille& grille, float cellSize) 
         if (reculer.estClique(mousePos)) {
             if (pause) {
                 std::cout << "Bouton Reculer cliqué.\n";
-                grille.revenirEnArriere(); // Revenir à l'état précédent
+                if (!grille.revenirEnArriere()) {
+                    std::cout << "Impossible de reculer, aucun état enregistré." << std::endl;
+                }
             }
             return;
         }
-
 
         if (activerClicBouton.estClique(mousePos)) {
             clicsGrilleActifs = !clicsGrilleActifs;
@@ -128,6 +153,7 @@ void Fenetre::gererEvenements(sf::Event& event, Grille& grille, float cellSize) 
 }
 
 void Fenetre::afficherPause(Grille& grille, float cellSize) {
+    slider2.draw(window);
     slider1.draw(window);
 
     if (pause) {

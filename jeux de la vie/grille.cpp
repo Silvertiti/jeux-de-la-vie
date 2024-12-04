@@ -5,11 +5,17 @@
 
 Grille::Grille(int lignes, int colonnes) : lignes(lignes), colonnes(colonnes) {
     tableau = new bool[lignes * colonnes]();
+    cellulesImmortelles = new bool[lignes * colonnes]();
+    cellulesIndestructibles = new bool[lignes * colonnes](); // Initialiser toutes les cellules comme destructibles
 }
 
 Grille::~Grille() {
     delete[] tableau;
+    delete[] cellulesImmortelles;
+    delete[] cellulesIndestructibles;
 }
+
+
 
 bool Grille::initialiserDepuisFichier(const std::string& cheminFichier) {
     std::ifstream fichier(cheminFichier);
@@ -48,6 +54,24 @@ int Grille::verifierVoisins(int x, int y) {
     return compteur;
 }
 
+void Grille::definirCelluleIndestructible(int x, int y) {
+    if (x >= 0 && x < lignes && y >= 0 && y < colonnes) {
+        int index = x * colonnes + y;
+        cellulesIndestructibles[index] = !cellulesIndestructibles[index]; // Basculer l'état
+        tableau[index] = cellulesIndestructibles[index] ? false : tableau[index]; // Si indestructible, elle reste morte
+    }
+}
+
+
+void Grille::definirCelluleImmortelle(int x, int y) {
+    if (x >= 0 && x < lignes && y >= 0 && y < colonnes) {
+        int index = x * colonnes + y;
+        cellulesImmortelles[index] = !cellulesImmortelles[index]; // Basculer l'état
+        tableau[index] = cellulesImmortelles[index] ? true : tableau[index]; // Si immortelle, elle devient vivante
+    }
+}
+
+
 void Grille::sauvegarderEtat() {
     bool* etatSauvegarde = new bool[lignes * colonnes];
     std::memcpy(etatSauvegarde, tableau, lignes * colonnes * sizeof(bool));
@@ -67,14 +91,23 @@ bool Grille::revenirEnArriere() {
 }
 
 void Grille::mettreAJour() {
-    sauvegarderEtat(); // Sauvegarder l'état avant la mise à jour
-    bool* temp = new bool[lignes * colonnes];
+    sauvegarderEtat(); // Sauvegarder l'état actuel avant de le modifier
 
+    bool* temp = new bool[lignes * colonnes];
     for (int i = 0; i < lignes; ++i) {
         for (int j = 0; j < colonnes; ++j) {
-            int voisins = verifierVoisins(i, j);
             int index = i * colonnes + j;
-            temp[index] = tableau[index] ? (voisins == 2 || voisins == 3) : (voisins == 3);
+
+            if (cellulesIndestructibles[index]) {
+                temp[index] = false; // Cellule morte indestructible reste morte
+            }
+            else if (cellulesImmortelles[index]) {
+                temp[index] = true; // Cellule immortelle reste vivante
+            }
+            else {
+                int voisins = verifierVoisins(i, j);
+                temp[index] = tableau[index] ? (voisins == 2 || voisins == 3) : (voisins == 3);
+            }
         }
     }
 
@@ -83,16 +116,29 @@ void Grille::mettreAJour() {
 }
 
 
+
 void Grille::afficher(sf::RenderWindow& window, float cellSize, sf::Vector2f grilleOffset) {
     sf::RectangleShape cellule(sf::Vector2f(cellSize - 1, cellSize - 1));
 
     for (int i = 0; i < lignes; ++i) {
         for (int j = 0; j < colonnes; ++j) {
+            int index = i * colonnes + j;
+
             cellule.setPosition(
-                j * cellSize + grilleOffset.x, // Appliquer le décalage horizontal
-                i * cellSize + grilleOffset.y  // Appliquer le décalage vertical
+                j * cellSize + grilleOffset.x,
+                i * cellSize + grilleOffset.y
             );
-            cellule.setFillColor(tableau[i * colonnes + j] ? sf::Color::Black : sf::Color::White);
+
+            if (cellulesIndestructibles[index]) {
+                cellule.setFillColor(sf::Color::Red); // Couleur spéciale pour les cellules mortes indestructibles
+            }
+            else if (cellulesImmortelles[index]) {
+                cellule.setFillColor(sf::Color::Blue); // Couleur spéciale pour les cellules immortelles
+            }
+            else {
+                cellule.setFillColor(tableau[index] ? sf::Color::Black : sf::Color::White);
+            }
+
             window.draw(cellule);
         }
     }

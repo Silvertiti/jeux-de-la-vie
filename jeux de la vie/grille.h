@@ -10,11 +10,14 @@ private:
     int lignes, colonnes;
     bool* tableau;
     std::stack<bool*> historique; // Pile pour l'historique
+    bool* cellulesImmortelles;  // Indique si une cellule est immortelle
+    bool* cellulesIndestructibles; // Indique si une cellule est morte indestructible
 
 public:
     Grille(int lignes, int colonnes);
     ~Grille();
-
+    void definirCelluleIndestructible(int x, int y); // Définit une cellule comme morte indestructible
+    void definirCelluleImmortelle(int x, int y); // Définit une cellule comme immortelle
 	int verifierVoisins(int x, int y);
     void sauvegarderEtat(); // Sauvegarde l'état actuel
     bool revenirEnArriere(); // Revenir à l'état précédent
