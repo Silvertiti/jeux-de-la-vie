@@ -8,7 +8,6 @@ Fenetre::Fenetre(int largeur, int hauteur, const std::string& titre)
     activerClicBouton("Activer Modification"),
     clicsGrilleActifs(false),
     slider1(largeur - 20, hauteur - 200, 150, 1.0f, 0.001f),        // premier slider pour vitess
-	slider2(largeur - 60, hauteur - 200, 150, 1, 100),        // deuxieme slider pour zoom
     grilleOffset(0.0f, 0.0f),
     isDragging(false) {
 
@@ -98,13 +97,22 @@ void Fenetre::gererEvenements(sf::Event& event, Grille& grille, float cellSize) 
         }
 
         if (avancer.estClique(mousePos)) {
-            std::cout << "Bouton Avancer cliqué.\n";
+            if (pause) {
+                std::cout << "Bouton Avancer cliqué.\n";
+                // Appelle la méthode pour avancer une itération
+                grille.mettreAJour();
+            }
             return;
         }
         if (reculer.estClique(mousePos)) {
-            std::cout << "Bouton Reculer cliqué.\n";
+            if (pause) {
+                std::cout << "Bouton Reculer cliqué.\n";
+                grille.revenirEnArriere(); // Revenir à l'état précédent
+            }
             return;
         }
+
+
         if (activerClicBouton.estClique(mousePos)) {
             clicsGrilleActifs = !clicsGrilleActifs;
             activerClicBouton.setString(clicsGrilleActifs ? "Désactiver Modification" : "Activer Modification");
@@ -117,11 +125,9 @@ void Fenetre::gererEvenements(sf::Event& event, Grille& grille, float cellSize) 
     }
 
     slider1.handleEvent(event, window);
-    slider2.handleEvent(event, window);
 }
 
 void Fenetre::afficherPause(Grille& grille, float cellSize) {
-    slider2.draw(window);
     slider1.draw(window);
 
     if (pause) {

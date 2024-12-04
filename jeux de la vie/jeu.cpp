@@ -12,6 +12,16 @@ Jeu::Jeu(const std::string& cheminFichier, int lignes, int colonnes, float cellS
     }
 }
 
+void Jeu::avancerIteration() {
+    grille->mettreAJour(); // Met à jour la grille pour une seule itération
+}
+
+void Jeu::reculerIteration() {
+    if (!grille->revenirEnArriere()) {
+        std::cerr << "Impossible de reculer : aucun état précédent disponible." << std::endl;
+    }
+}
+
 Jeu::~Jeu() {
     delete grille;
 }
@@ -40,6 +50,8 @@ void Jeu::bouclePrincipale() {
         sf::Vector2u windowSize = fenetre.getWindow().getSize();
         view.setSize(windowSize.x / zoomLevel, windowSize.y / zoomLevel);
         fenetre.getWindow().setView(view);
+
+
 
         // Met à jour la grille si le jeu n'est pas en pause et que le délai est écoulé
         if (!fenetre.estPause() && clock.getElapsedTime().asSeconds() >= delay) {

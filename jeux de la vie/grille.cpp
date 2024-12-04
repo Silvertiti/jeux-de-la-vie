@@ -48,7 +48,26 @@ int Grille::verifierVoisins(int x, int y) {
     return compteur;
 }
 
+void Grille::sauvegarderEtat() {
+    bool* etatSauvegarde = new bool[lignes * colonnes];
+    std::memcpy(etatSauvegarde, tableau, lignes * colonnes * sizeof(bool));
+    historique.push(etatSauvegarde);
+}
+
+bool Grille::revenirEnArriere() {
+    if (historique.empty()) {
+        std::cerr << "Aucun état précédent disponible." << std::endl;
+        return false;
+    }
+
+    delete[] tableau; // Libérer l'état actuel
+    tableau = historique.top(); // Récupérer l'état précédent
+    historique.pop(); // Supprimer l'état de la pile
+    return true;
+}
+
 void Grille::mettreAJour() {
+    sauvegarderEtat(); // Sauvegarder l'état avant la mise à jour
     bool* temp = new bool[lignes * colonnes];
 
     for (int i = 0; i < lignes; ++i) {
@@ -62,6 +81,7 @@ void Grille::mettreAJour() {
     std::memcpy(tableau, temp, lignes * colonnes * sizeof(bool));
     delete[] temp;
 }
+
 
 void Grille::afficher(sf::RenderWindow& window, float cellSize, sf::Vector2f grilleOffset) {
     sf::RectangleShape cellule(sf::Vector2f(cellSize - 1, cellSize - 1));

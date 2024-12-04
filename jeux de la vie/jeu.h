@@ -18,9 +18,8 @@ public:
     Jeu(const std::string& cheminFichier, int lignes, int colonnes, float cellSize);
     ~Jeu();
     void bouclePrincipale();
-
-    //void avancerIteration(); // Avancer d'une itération
-    //void reculerIteration(); // Reculer d'une itération
+    void avancerIteration(); // Méthode pour avancer d'une itération
+    void reculerIteration(); // Méthode pour reculer d'une itération
 
 };
 
