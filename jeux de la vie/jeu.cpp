@@ -1,4 +1,5 @@
 #include "Jeu.h"
+#include "slider.h"
 #include <iostream>
 #include <SFML/System.hpp>
 
@@ -19,7 +20,6 @@ Jeu::~Jeu() {
 
 void Jeu::bouclePrincipale() {
     sf::Clock clock;
-    float delay = 0.9f;
 
     while (fenetre.getWindow().isOpen()) {
         fenetre.gererEvenements(); // Capturer les événements
@@ -34,13 +34,21 @@ void Jeu::bouclePrincipale() {
 
         fenetre.getWindow().clear(sf::Color::White);
 
-        // Dessiner la grille
+        // dessiner lz grille
         grille->afficher(fenetre.getWindow(), cellSize);
 
-        // Dessiner les éléments dans la bande droite
+        // affiche pause et sliders
         fenetre.getWindow().setView(fenetre.getWindow().getDefaultView());
         fenetre.afficherPause();
 
         fenetre.getWindow().display();
     }
 }
+
+//void Jeu::avancerIteration() {
+    //grille->mettreAJour();
+//}
+
+//void Jeu::reculerIteration() {
+    //grille->restaurerEtat();
+//}
