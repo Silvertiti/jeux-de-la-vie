@@ -8,6 +8,7 @@ class Grille {
 private:
     int lignes, colonnes;
     bool* tableau;
+    sf::Clock clickCooldown; // clock pour marge click
 
 public:
     Grille(int lignes, int colonnes);
@@ -17,6 +18,7 @@ public:
     int verifierVoisins(int x, int y);
     void mettreAJour();
     void afficher(sf::RenderWindow& window, float cellSize);
+    void changerCase(sf::RenderWindow& window, float cellSize, sf::Event& event);
 };
 
 #endif

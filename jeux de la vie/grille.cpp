@@ -1,6 +1,6 @@
 #include "Grille.h"
 #include <cstring>
-
+#include <iostream>
 Grille::Grille(int lignes, int colonnes) : lignes(lignes), colonnes(colonnes) {
     tableau = new bool[lignes * colonnes]();
 }
@@ -43,6 +43,27 @@ void Grille::mettreAJour() {
     delete[] temp;
 }
 
+void Grille::changerCase(sf::RenderWindow& window, float cellSize, sf::Event& event) {
+    sf::Vector2f decalage(100, 100); // Décalage pour positionner la grille
+
+    if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
+        sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+        sf::Vector2f worldPos = window.mapPixelToCoords(mousePos);
+
+        // Calcul des coordonnées de la case dans la grille
+        int col = static_cast<int>((worldPos.x - decalage.x) / cellSize);
+        int row = static_cast<int>((worldPos.y - decalage.y) / cellSize);
+
+        // Vérifie si les coordonnées sont dans les limites de la grille
+        if (col >= 0 && col < colonnes && row >= 0 && row < lignes) {
+            int index = row * colonnes + col;
+            tableau[index] = !tableau[index]; // Change l'état de la case
+            std::cout << "Case cliquée : (" << row << ", " << col << ") nouvel état : "
+                << (tableau[index] ? "vivante" : "morte") << std::endl;
+        }
+    }
+}
+
 void Grille::afficher(sf::RenderWindow& window, float cellSize) {
     //sf::View view(sf::FloatRect(0, 0, window.getSize().x, window.getSize().y));
 	//view.zoom(0.5f);    
@@ -57,6 +78,24 @@ void Grille::afficher(sf::RenderWindow& window, float cellSize) {
             cellule.setPosition(j * cellSize+decalage.x, i * cellSize+decalage.y);
             cellule.setFillColor(tableau[i * colonnes + j] ? sf::Color::Black : sf::Color::White);
             window.draw(cellule);
+        }
+    }
+
+
+    // Cooldown check
+    if (clickCooldown.getElapsedTime().asSeconds() > 0.f) { // Cooldown of 200ms
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+            sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+            sf::Vector2f worldPos = window.mapPixelToCoords(mousePos);
+
+            // Calculate grid coordinates
+            int col = static_cast<int>((worldPos.x - decalage.x) / cellSize);
+            int row = static_cast<int>((worldPos.y - decalage.y) / cellSize);
+
+            if (col >= 0 && col < colonnes && row >= 0 && row < lignes) {
+                std::cout << "Clicked cell at: (" << row << ", " << col << ")" << std::endl;
+                clickCooldown.restart(); // Reset cooldown timer
+            }
         }
     }
 

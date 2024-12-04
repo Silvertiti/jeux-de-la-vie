@@ -11,7 +11,7 @@ private:
     int lignes, colonnes;
     float cellSize;
     Fenetre fenetre;
-    
+
     bool pause; // Ajouté pour gérer la pause
 
 public:

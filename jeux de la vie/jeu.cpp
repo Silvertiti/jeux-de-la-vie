@@ -22,25 +22,33 @@ void Jeu::bouclePrincipale() {
     sf::Clock clock;
 
     while (fenetre.getWindow().isOpen()) {
-        fenetre.gererEvenements(); // Capturer les événements
+        sf::Event event;
 
-        delay = fenetre.getSlider().getValue();
-        if (!fenetre.estPause()) {
-            if (clock.getElapsedTime().asSeconds() >= delay) {
-                grille->mettreAJour();
-                clock.restart();
+        while (fenetre.getWindow().pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                fenetre.getWindow().close();
             }
+
+            fenetre.gererEvenements(event);
+            grille->changerCase(fenetre.getWindow(), cellSize, event);
+        }
+
+        float delay = fenetre.getSlider1().getCurrentValue();
+        float zoomLevel = fenetre.getSlider2().getCurrentValue();
+
+        sf::View view = fenetre.getWindow().getView();
+        view.setSize(900 / zoomLevel, 800 / zoomLevel);
+        fenetre.getWindow().setView(view);
+
+        if (!fenetre.estPause() && clock.getElapsedTime().asSeconds() >= delay) {
+            grille->mettreAJour();
+            clock.restart();
         }
 
         fenetre.getWindow().clear(sf::Color::White);
-
-        // dessiner lz grille
         grille->afficher(fenetre.getWindow(), cellSize);
-
-        // affiche pause et sliders
         fenetre.getWindow().setView(fenetre.getWindow().getDefaultView());
         fenetre.afficherPause();
-
         fenetre.getWindow().display();
     }
 }

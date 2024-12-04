@@ -17,10 +17,14 @@ public:
     void draw(sf::RenderWindow& window);
 
 
-    void handleEvent(const sf::Event& event, const sf::RenderWindow& window);
+    void handleEvent(sf::Event& event, sf::RenderWindow& window);
 
 
-    float getValue() const { return currentValue; }
+    float getCurrentValue() const;
+
+    sf::FloatRect getBarBounds() const {
+        return bar.getGlobalBounds();
+    }
 };
 
 #endif // SLIDER_H
