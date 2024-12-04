@@ -5,9 +5,10 @@
 
 Grille::Grille(int lignes, int colonnes) : lignes(lignes), colonnes(colonnes) {
     tableau = new bool[lignes * colonnes]();
-    cellulesImmortelles = new bool[lignes * colonnes]();
-    cellulesIndestructibles = new bool[lignes * colonnes](); // Initialiser toutes les cellules comme destructibles
+    cellulesImmortelles = new bool[lignes * colonnes](); // Tout initialisé à false
+    cellulesIndestructibles = new bool[lignes * colonnes](); // Tout initialisé à false
 }
+
 
 Grille::~Grille() {
     delete[] tableau;
@@ -45,14 +46,15 @@ int Grille::verifierVoisins(int x, int y) {
     };
 
     for (auto& dir : directions) {
-        int nx = x + dir[0], ny = y + dir[1];
-        if (nx >= 0 && nx < lignes && ny >= 0 && ny < colonnes) {
-            compteur += tableau[nx * colonnes + ny];
-        }
+        int nx = (x + dir[0] + lignes) % lignes; // Gestion torique pour les lignes
+        int ny = (y + dir[1] + colonnes) % colonnes; // Gestion torique pour les colonnes
+
+        compteur += tableau[nx * colonnes + ny];
     }
 
     return compteur;
 }
+
 
 void Grille::definirCelluleIndestructible(int x, int y) {
     if (x >= 0 && x < lignes && y >= 0 && y < colonnes) {
@@ -130,13 +132,13 @@ void Grille::afficher(sf::RenderWindow& window, float cellSize, sf::Vector2f gri
             );
 
             if (cellulesIndestructibles[index]) {
-                cellule.setFillColor(sf::Color::Red); // Couleur spéciale pour les cellules mortes indestructibles
+                cellule.setFillColor(sf::Color::Red); // Cellule indestructible
             }
             else if (cellulesImmortelles[index]) {
-                cellule.setFillColor(sf::Color::Blue); // Couleur spéciale pour les cellules immortelles
+                cellule.setFillColor(sf::Color::Blue); // Cellule immortelle
             }
             else {
-                cellule.setFillColor(tableau[index] ? sf::Color::Black : sf::Color::White);
+                cellule.setFillColor(tableau[index] ? sf::Color::Black : sf::Color::White); // Cellule normale
             }
 
             window.draw(cellule);
@@ -161,20 +163,33 @@ void Grille::afficher(sf::RenderWindow& window, float cellSize, sf::Vector2f gri
     }
 }
 
+int Grille::getColonnes() const {
+    return colonnes;
+}
+
+int Grille::getLignes() const {
+    return lignes;
+}
 
 void Grille::changerCase(sf::RenderWindow& window, float cellSize, sf::Event& event, sf::Vector2f grilleOffset) {
-    if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
-        sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-        sf::Vector2f worldPos = window.mapPixelToCoords(mousePos);
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    sf::Vector2f worldPos = window.mapPixelToCoords(mousePos);
 
-        int col = static_cast<int>((worldPos.x - grilleOffset.x) / cellSize);
-        int row = static_cast<int>((worldPos.y - grilleOffset.y) / cellSize);
+    int col = static_cast<int>((worldPos.x - grilleOffset.x) / cellSize);
+    int row = static_cast<int>((worldPos.y - grilleOffset.y) / cellSize);
 
-        if (col >= 0 && col < colonnes && row >= 0 && row < lignes) {
-            int index = row * colonnes + col;
+    if (col >= 0 && col < colonnes && row >= 0 && row < lignes) {
+        int index = row * colonnes + col;
+
+        // Vérifier si la cellule est modifiable
+        if (!cellulesImmortelles[index] && !cellulesIndestructibles[index]) {
             tableau[index] = !tableau[index];
-            std::cout << "Case cliquée : (" << row << ", " << col << ") nouvel état : "
+            std::cout << "Case normale modifiée : (" << row << ", " << col << ") -> "
                 << (tableau[index] ? "vivante" : "morte") << std::endl;
+        }
+        else {
+            std::cout << "Case protégée (immortelle ou indestructible) : (" << row << ", " << col << ")\n";
         }
     }
 }
+
