@@ -42,8 +42,8 @@ void Jeu::bouclePrincipale() {
         }
 
         // Récupère la valeur des sliders pour régler la vitesse et le zoom
-        float delay = fenetre.getSlider1().getCurrentValue();
-        cellSize = fenetre.getSlider2().getCurrentValue();
+        float delay = fenetre.getSlider1().getCurrentValeur();
+        cellSize = fenetre.getSlider2().getCurrentValeur();
 
 
 

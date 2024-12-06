@@ -209,8 +209,8 @@ void Fenetre::gererEvenements(sf::Event& event, Grille& grille, float cellSize) 
     }
 
     // Gestion des sliders
-    slider1.handleEvent(event, window);
-    slider2.handleEvent(event, window);
+    slider1.gererEvenementSlider(event, window);
+    slider2.gererEvenementSlider(event, window);
 }
 
 
