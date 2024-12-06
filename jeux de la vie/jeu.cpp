@@ -2,8 +2,7 @@
 #include <iostream>
 #include <SFML/System.hpp>
 
-Jeu::Jeu(const std::string& cheminFichier, int lignes, int colonnes, float cellSize)
-    : lignes(lignes), colonnes(colonnes), cellSize(cellSize),
+Jeu::Jeu( std::string& cheminFichier, int lignes, int colonnes, float cellSize): lignes(lignes), colonnes(colonnes), cellSize(cellSize),
     fenetre(1000, 900, "Jeu de la Vie - SFML") {
     grille = new Grille(lignes, colonnes);
     if (!grille->initialiserDepuisFichier(cheminFichier)) {

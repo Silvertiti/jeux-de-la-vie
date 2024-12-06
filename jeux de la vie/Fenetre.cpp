@@ -12,8 +12,8 @@ Fenetre::Fenetre(int largeur, int hauteur, const std::string& titre)
     texteVitesse("Zoom"),
     activerClicBouton("Activer Modification"),
     clicsGrilleActifs(false),
-    slider1(static_cast<float>(largeur - 150), static_cast<float>(hauteur - 100), 150.0f, 1.0f, 0.001f),
-    slider2(static_cast<float>(largeur - 150), static_cast<float>(hauteur - 50), 150.0f, 30.0f, 5.0f),
+    slider1((largeur - 150), (hauteur - 100), 150.0f, 1.0f, 0.001f),
+    slider2((largeur - 150), (hauteur - 50), 150.0f, 30.0f, 5.0f),
     grilleOffset(0.0f, 0.0f),
     isDragging(false)
     {
