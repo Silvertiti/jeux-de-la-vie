@@ -4,6 +4,7 @@
 
 int max = 600000;
 
+
 int main() {
 
     int lignes = 0, colonnes = 0;
@@ -18,7 +19,7 @@ int main() {
     }
     if (choixFichier == 2) {
 
-        std::string cheminFichier = "C:\\Users\\laara\\OneDrive\\Bureau\\test github3\\test.txt";
+        std::string cheminFichier = "C:\\Users\\laara\\OneDrive\\Bureau\\test github 2\\test.txt";
 
 
         if (!Fichier::lireDimensions(cheminFichier, lignes, colonnes)) {
@@ -69,14 +70,14 @@ int main() {
         std::cout << "Vous avez choisi un modele predefinis  " << std::endl;
 
         std::cout << "Choisissez le modele\n\n  " << std::endl;
-        std::cout << "1: blinker\n2: Gosper Glider Gun\n" << std::endl;
+        std::cout << "1: Metacell\n2: Gosper Glider Gun\n" << std::endl;
 
         int choixModele;
         std::cin >> choixModele;
 
         if (choixModele == 1) {
             std::cout << "vous avez choissis blinker";
-            std::string cheminFichier = "C:\\Users\\laara\\OneDrive\\Bureau\\test github3\\modele predefinis\\blinker.txt"; // Utilisation d'un chemin relatif
+            std::string cheminFichier = "C:\\Users\\laara\\OneDrive\\Bureau\\test github 2\\modele predefinis\\blinker.txt"; // Utilisation d'un chemin relatif
 
 
 
@@ -118,7 +119,7 @@ int main() {
 
         if (choixModele == 2) {
             std::cout << "vous avez choissis Gosper Glider Gun";
-            std::string cheminFichier = "C:\\Users\\laara\\OneDrive\\Bureau\\test github3\\modele predefinis\\Gosper Glider Gun.txt"; // Utilisation d'un chemin relatif
+            std::string cheminFichier = "C:\\Users\\laara\\OneDrive\\Bureau\\test github 2\\modele predefinis\\Gosper Glider Gun.txt"; // Utilisation d'un chemin relatif
 
 
 
