@@ -142,20 +142,24 @@
     <ClCompile Include="Bouton.cpp" />
     <ClCompile Include="DragDrop.cpp" />
     <ClCompile Include="Fenetre.cpp" />
+    <ClCompile Include="fenetrebonus.cpp" />
     <ClCompile Include="fichier.cpp" />
     <ClCompile Include="grille.cpp" />
     <ClCompile Include="jeux de la vie.cpp" />
     <ClCompile Include="jeu.cpp" />
     <ClCompile Include="slider.cpp" />
+    <ClCompile Include="texte.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bouton.h" />
     <ClInclude Include="DragDrop.h" />
     <ClInclude Include="Fenetre.h" />
+    <ClInclude Include="fenetrebonus.h" />
     <ClInclude Include="fichier.h" />
     <ClInclude Include="grille.h" />
     <ClInclude Include="jeu.h" />
     <ClInclude Include="slider.h" />
+    <ClInclude Include="texte.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

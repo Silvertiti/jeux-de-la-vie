@@ -14,7 +14,7 @@ public:
     Slider(float x, float y, float height, float minValue, float maxValue);
 
 
-    void draw(sf::RenderWindow& window);
+    void afficher(sf::RenderWindow& window);
 
 
     void handleEvent(sf::Event& event, sf::RenderWindow& window);

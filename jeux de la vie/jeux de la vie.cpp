@@ -31,7 +31,7 @@ int main() {
         return -1;
     }
 
-    Jeu jeu(cheminFichier, lignes, colonnes, 20.0f);
+    Jeu jeu(cheminFichier, lignes, colonnes, 10.0f);
     std::cout << "Démarrage de la boucle principale..." << std::endl;
 
     if (choix == 1) {

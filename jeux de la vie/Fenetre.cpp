@@ -1,4 +1,5 @@
-#include "Fenetre.h"
+Ôªø#include "Fenetre.h"
+#include "fenetrebonus.h"
 #include <iostream>
 
 Fenetre::Fenetre(int largeur, int hauteur, const std::string& titre)
@@ -6,48 +7,66 @@ Fenetre::Fenetre(int largeur, int hauteur, const std::string& titre)
     avancer("Avancer"),
     reculer("Reculer"),
     exporter("Exporter"),
+    ouvrirFenetreDesign("(?)"),
+    texteZoom("Vitesse"),
+    texteVitesse("Zoom"),
     activerClicBouton("Activer Modification"),
     clicsGrilleActifs(false),
-    slider1(static_cast<float>(largeur - 20), static_cast<float>(hauteur - 200), 150.0f, 1.0f, 0.001f),
-    slider2(static_cast<float>(largeur - 60), static_cast<float>(hauteur - 200), 150.0f, 1.0f, 100.0f),
-
+    slider1(static_cast<float>(largeur - 150), static_cast<float>(hauteur - 100), 150.0f, 1.0f, 0.001f),
+    slider2(static_cast<float>(largeur - 150), static_cast<float>(hauteur - 50), 150.0f, 30.0f, 5.0f),
     grilleOffset(0.0f, 0.0f),
     isDragging(false)
     {
 
+    ouvrirFenetreDesign.setBackGroundColorClear();
+
+
     window.create(sf::VideoMode(largeur, hauteur), titre);
 
+    // Bouton "Info"
+    ouvrirFenetreDesign.setPosition(largeur - 50, hauteur - 155);
+    ouvrirFenetreDesign.setBackGroundColorClear();
+
+
+	// Texte "Vitesse"
+	texteVitesse.setPosition(largeur - 240, hauteur - 55);
+	// Texte "Zoom"
+	texteZoom.setPosition(largeur - 240, hauteur - 105);
+
     // Bouton "Exporter"
-    exporter.setPosition(100, hauteur - 60); // Positionnez le bouton
-    exporter.setBackgroundColor(sf::Color(150, 150, 255)); // Couleur du bouton
+    exporter.setPosition(150, hauteur - 60); 
 
     // Bouton "Pause/Start"
     boutonPause.setSize(sf::Vector2f(100, 40));
-    boutonPause.setFillColor(sf::Color(200, 200, 200));
-    boutonPause.setPosition(10, hauteur - 60); // Ajustez la position selon vos besoins
+    boutonPause.setFillColor(sf::Color(32, 32, 32, 255));
+    boutonPause.setPosition(10, hauteur - 60); 
 
     if (!font.loadFromFile("arial.ttf")) {
         std::cerr << "Erreur : Impossible de charger la police." << std::endl;
         exit(-1);
     }
 
+	// rectangle "interface"
+
+
+	rectangle.setSize(sf::Vector2f(largeur, 300));
+	rectangle.setFillColor(sf::Color(174, 174, 174, 255));
+	rectangle.setPosition(0, hauteur - 150);
+
     textePause.setFont(font);
     textePause.setCharacterSize(20);
-    textePause.setFillColor(sf::Color::Black);
+    textePause.setFillColor(sf::Color::White);
     textePause.setPosition(boutonPause.getPosition().x + 10, boutonPause.getPosition().y + 5);
     textePause.setString("START");
 
     // Bouton "Avancer"
-    avancer.setPosition(10, hauteur - 120); // Ajustez cette position
-    avancer.setBackgroundColor(sf::Color(100, 100, 255));
+    avancer.setPosition(10, hauteur - 120);
 
     // Bouton "Reculer"
-    reculer.setPosition(150, hauteur - 120); // Ajustez cette position
-    reculer.setBackgroundColor(sf::Color(255, 100, 100));
+    reculer.setPosition(150, hauteur - 120); 
 
     // Bouton "Activer Modification"
-    activerClicBouton.setPosition(10, hauteur - 180); // Ajustez cette position
-    activerClicBouton.setBackgroundColor(sf::Color(100, 255, 100));
+    activerClicBouton.setPosition(300, hauteur - 100);
 }
 
 
@@ -76,8 +95,23 @@ sf::Vector2f Fenetre::getGrilleOffset() const {
 }
 
 
+void Fenetre::mettreAJourBoutonPause(sf::RenderWindow& window) {
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+
+    // V√©rifier si la souris est au-dessus du bouton pause
+    if (boutonPause.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
+        boutonPause.setFillColor(sf::Color(64, 64, 64, 255)); // Couleur plus claire
+    }
+    else {
+        boutonPause.setFillColor(sf::Color(32, 32, 32, 255)); // Couleur par d√©faut
+    }
+}
+
+
+
+
 void Fenetre::gererEvenements(sf::Event& event, Grille& grille, float cellSize) {
-    // Gestion du clic droit pour le dÈplacement
+    // Gestion du clic droit pour le d√©placement
     if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right) {
         isDragging = true;
         dragStartPos = sf::Mouse::getPosition(window);
@@ -97,11 +131,13 @@ void Fenetre::gererEvenements(sf::Event& event, Grille& grille, float cellSize) 
         dragStartPos = currentMousePos;
     }
 
+
+
     // Gestion des clics et interactions
     if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
         sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 
-        // VÈrifier les interactions avec les boutons
+        // V√©rifier les interactions avec les boutons
         if (boutonPause.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
             pause = !pause;
             textePause.setString(pause ? "START" : "PAUSE");
@@ -110,7 +146,7 @@ void Fenetre::gererEvenements(sf::Event& event, Grille& grille, float cellSize) 
 
         if (avancer.estClique(mousePos)) {
             if (pause) {
-                std::cout << "Bouton Avancer cliquÈ.\n";
+                std::cout << "Bouton Avancer cliqu√©.\n";
                 grille.mettreAJour();
             }
             return;
@@ -118,9 +154,9 @@ void Fenetre::gererEvenements(sf::Event& event, Grille& grille, float cellSize) 
 
         if (reculer.estClique(mousePos)) {
             if (pause) {
-                std::cout << "Bouton Reculer cliquÈ.\n";
+                std::cout << "Bouton Reculer cliqu√©.\n";
                 if (!grille.revenirEnArriere()) {
-                    std::cout << "Impossible de reculer, aucun Ètat enregistrÈ.\n";
+                    std::cout << "Impossible de reculer, aucun √©tat enregistr√©.\n";
                 }
             }
             return;
@@ -134,10 +170,15 @@ void Fenetre::gererEvenements(sf::Event& event, Grille& grille, float cellSize) 
             return;
         }
 
+        if (ouvrirFenetreDesign.estClique(mousePos)) {
+            FenetreTouche FenetreTouche(font);
+            FenetreTouche.bouclePrincipaleTouche(); // Ouvre la nouvelle fen√™tre
+        }
+
 
         if (activerClicBouton.estClique(mousePos)) {
             clicsGrilleActifs = !clicsGrilleActifs;
-            activerClicBouton.setString(clicsGrilleActifs ? "DÈsactiver Modification" : "Activer Modification");
+            activerClicBouton.setString(clicsGrilleActifs ? "D√©sactiver Modification" : "Activer Modification");
             return;
         }
 
@@ -151,11 +192,11 @@ void Fenetre::gererEvenements(sf::Event& event, Grille& grille, float cellSize) 
             if (col >= 0 && col < grille.getColonnes() && row >= 0 && row < grille.getLignes()) {
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::I)) {
                     grille.definirCelluleImmortelle(row, col);
-                    std::cout << "Cellule immortelle dÈfinie ‡ (" << row << ", " << col << ").\n";
+                    std::cout << "Cellule immortelle d√©finie √† (" << row << ", " << col << ").\n";
                 }
                 else if (sf::Keyboard::isKeyPressed(sf::Keyboard::M)) {
                     grille.definirCelluleIndestructible(row, col);
-                    std::cout << "Cellule morte indestructible dÈfinie ‡ (" << row << ", " << col << ").\n";
+                    std::cout << "Cellule morte indestructible d√©finie √† (" << row << ", " << col << ").\n";
                 }
                 else {
                     grille.changerCase(window, cellSize, event, grilleOffset);
@@ -174,16 +215,30 @@ void Fenetre::gererEvenements(sf::Event& event, Grille& grille, float cellSize) 
 
 
 void Fenetre::afficherPause(Grille& grille, float cellSize) {
-    slider2.draw(window);
-    slider1.draw(window);
+    window.draw(rectangle);
+    slider2.afficher(window);
+	texteZoom.afficher(window);
+    slider1.afficher(window);
+	texteVitesse.afficher(window);
 
-    if (pause) {
-        avancer.afficher(window);        // Position fixe
-        reculer.afficher(window);        // Position fixe
-        activerClicBouton.afficher(window); // Position fixe
-        exporter.afficher(window); // Affiche le bouton "Exporter"
-    }
+	ouvrirFenetreDesign.afficher(window);
 
+    // Mettre √† jour et afficher le bouton pause
+    mettreAJourBoutonPause(window);
     window.draw(boutonPause);
     window.draw(textePause);
+
+    if (pause) {
+        avancer.afficher(window); 
+        reculer.afficher(window); 
+        activerClicBouton.afficher(window); 
+        exporter.afficher(window); 
+
+        // Mettre √† jour les autres boutons
+        avancer.mettreAJour(window);
+        reculer.mettreAJour(window);
+        activerClicBouton.mettreAJour(window);
+        exporter.mettreAJour(window);
+    }
 }
+

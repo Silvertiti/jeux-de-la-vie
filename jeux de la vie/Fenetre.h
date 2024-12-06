@@ -6,10 +6,14 @@
 #include "Bouton.h"
 #include "Slider.h"
 #include "Grille.h"
+#include "Texte.h"
 
 class Fenetre {
 private:
     sf::RenderWindow window;
+	Texte texteVitesse;
+	Texte texteZoom;
+	Bouton ouvrirFenetreDesign;
     Bouton avancer;
     Bouton reculer;
     Slider slider1; // Vitesse
@@ -25,7 +29,10 @@ private:
     bool isDragging;
     sf::Vector2i dragStartPos;
     sf::Vector2f grilleOffset;
-
+    sf::View grilleView;
+    sf::View interfaceView;
+	void mettreAJourBoutonPause(sf::RenderWindow& window);
+	sf::RectangleShape rectangle;// Rectangle pour interface
     Bouton exporter; // Bouton pour exporter la grille
 
 public:
@@ -38,6 +45,8 @@ public:
     sf::Vector2f getGrilleOffset() const;
     void gererEvenements(sf::Event& event, Grille& grille, float cellSize);
     void afficherPause(Grille& grille, float cellSize);
+
+
 };
 
 #endif // FENETRE_H

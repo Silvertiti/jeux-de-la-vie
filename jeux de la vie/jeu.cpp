@@ -4,7 +4,7 @@
 
 Jeu::Jeu(const std::string& cheminFichier, int lignes, int colonnes, float cellSize)
     : lignes(lignes), colonnes(colonnes), cellSize(cellSize),
-    fenetre(900, 800, "Jeu de la Vie - SFML") {
+    fenetre(1000, 900, "Jeu de la Vie - SFML") {
     grille = new Grille(lignes, colonnes);
     if (!grille->initialiserDepuisFichier(cheminFichier)) {
         std::cerr << "Erreur : Impossible de lire la grille." << std::endl;
@@ -43,13 +43,8 @@ void Jeu::bouclePrincipale() {
 
         // Récupère la valeur des sliders pour régler la vitesse et le zoom
         float delay = fenetre.getSlider1().getCurrentValue();
-        float zoomLevel = fenetre.getSlider2().getCurrentValue();
+        cellSize = fenetre.getSlider2().getCurrentValue();
 
-        // Met à jour la vue pour gérer le zoom
-        sf::View view = fenetre.getWindow().getView();
-        sf::Vector2u windowSize = fenetre.getWindow().getSize();
-        view.setSize(windowSize.x / zoomLevel, windowSize.y / zoomLevel);
-        fenetre.getWindow().setView(view);
 
 
 
@@ -58,12 +53,11 @@ void Jeu::bouclePrincipale() {
             grille->mettreAJour();
             clock.restart();
         }
-
-        // Dessine la fenêtre et ses composants
         fenetre.getWindow().clear(sf::Color::White);
         grille->afficher(fenetre.getWindow(), cellSize, fenetre.getGrilleOffset());
+        fenetre.afficherPause(*grille, cellSize); // Appelé après le dessin de la grille
         fenetre.getWindow().setView(fenetre.getWindow().getDefaultView());
-        fenetre.afficherPause(*grille, cellSize);
         fenetre.getWindow().display();
+
     }
 }

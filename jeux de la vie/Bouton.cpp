@@ -12,14 +12,13 @@ Bouton::Bouton(const std::string& texte) {
 
     text.setFont(font);
     text.setCharacterSize(20);
-    text.setFillColor(sf::Color::Black);
+    text.setFillColor(sf::Color::White);
     text.setString(texte);
 
     sf::FloatRect textBounds = text.getLocalBounds();
     float padding = 10.f;
 
     fond.setSize(sf::Vector2f(textBounds.width + 2 * padding, textBounds.height + 2 * padding));
-    fond.setFillColor(sf::Color(100, 0, 200));
     fond.setPosition(0, 0);
 
     text.setPosition(fond.getPosition().x + padding, fond.getPosition().y + padding - textBounds.top);
@@ -47,24 +46,30 @@ void Bouton::setString(const std::string& nouveauTexte) {
     text.setPosition(fond.getPosition().x + padding, fond.getPosition().y + padding - textBounds.top);
 }
 
-void Bouton::setBackgroundColor(sf::Color c) {                                  //pour definir une couleur perso au fond d'un bouto
-    fond.setFillColor(sf::Color::Red);
+void Bouton::setBackGroundColorClear() {                                  //pour definir une couleur perso au fond d'un bouto
+    fond.setFillColor(sf::Color(0,0,0,0));
 }
 
 
 void Bouton::afficher(sf::RenderWindow& window) {
     sf::Vector2i localPosition = sf::Mouse::getPosition(window);
 
-    if (fond.getGlobalBounds().contains(static_cast<float>(localPosition.x), static_cast<float>(localPosition.y))) {                      //static_cast<float> sert a transformer le type en float 
-        fond.setFillColor(sf::Color(100, 100, 0, 100));                         //couleur bouton avec curseur 
-    }
-    else {
-        fond.setFillColor(sf::Color(50, 50, 0, 50));                            //couleur bouton de base 
-    }
-
     window.draw(fond);                                                          //affichage du fond pour le bouton 
     window.draw(text);                                                          //affichage du texte pour le bouton 
 }
+
+void Bouton::mettreAJour(sf::RenderWindow& window) {
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+
+    // Vérifier si la souris est au-dessus du bouton
+    if (fond.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
+        fond.setFillColor(sf::Color(64, 64, 64, 255)); // Couleur plus claire
+    }
+    else {
+        fond.setFillColor(sf::Color(32, 32, 32, 255));
+    }
+}
+
 
 
 bool Bouton::estClique(const sf::Vector2i& mousePos) const { //pour implémentation avancer une iter
