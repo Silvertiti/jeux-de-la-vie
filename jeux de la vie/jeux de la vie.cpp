@@ -5,7 +5,7 @@
 int Max = 600000;
 
 int main() {
-    std::string cheminFichier = "C:\\Users\\methe\\source\\repos\\jeux de la vie\\test.txt";    
+    std::string cheminFichier = "C:\\Users\\laara\\OneDrive\\Bureau\\test github 2\\test.txt";
     int lignes = 0, colonnes = 0;
 
     if (!Fichier::lireDimensions(cheminFichier, lignes, colonnes)) {

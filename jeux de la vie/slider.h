@@ -12,16 +12,9 @@ private:
 public:
 
     Slider(float x, float y, float height, float minValue, float maxValue);
-
-
     void afficher(sf::RenderWindow& window);
-
-
     void handleEvent(sf::Event& event, sf::RenderWindow& window);
-
-
     float getCurrentValue() const;
-
     sf::FloatRect getBarBounds() const {
         return bar.getGlobalBounds();
     }
