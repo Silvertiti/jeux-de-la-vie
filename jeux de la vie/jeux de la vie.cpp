@@ -19,7 +19,7 @@ int main() {
     }
     if (choixFichier == 2) {
 
-        std::string cheminFichier = "C:\\Users\\laara\\OneDrive\\Bureau\\test github3\\test.txt";
+        std::string cheminFichier = "C:\\Users\\methe\\source\\repos\\jeux de la vie\\test.txt";
 
 
         if (!Fichier::lireDimensions(cheminFichier, lignes, colonnes)) {

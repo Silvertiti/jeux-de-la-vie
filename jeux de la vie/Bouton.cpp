@@ -46,7 +46,7 @@ void Bouton::setString(const std::string& nouveauTexte) {
     text.setPosition(fond.getPosition().x + padding, fond.getPosition().y + padding - textBounds.top);
 }
 
-void Bouton::mettreFondVide() {                                  //pour definir une couleur perso au fond d'un bouto
+void Bouton::setBackGroundColorClear() {                                  //pour definir une couleur perso au fond d'un bouto
     fond.setFillColor(sf::Color(0, 0, 0, 0));
 }
 

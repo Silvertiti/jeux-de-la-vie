@@ -1,12 +1,12 @@
-#include "Grille.h"
+ï»¿#include "Grille.h"
 #include <cstring>
 #include <iostream>
 #include <fstream>
 
 Grille::Grille(int lignes, int colonnes) : lignes(lignes), colonnes(colonnes) {
     tableau = new bool[lignes * colonnes]();
-    cellulesImmortelles = new bool[lignes * colonnes](); // Tout initialisé à false
-    cellulesIndestructibles = new bool[lignes * colonnes](); // Tout initialisé à false
+    cellulesImmortelles = new bool[lignes * colonnes](); // Tout initialisï¿½ ï¿½ false
+    cellulesIndestructibles = new bool[lignes * colonnes](); // Tout initialisï¿½ ï¿½ false
 }
 
 
@@ -19,7 +19,9 @@ Grille::~Grille() {
 
 
 bool Grille::initialiserDepuisFichier(const std::string& cheminFichier) {
+
     std::ifstream fichier(cheminFichier);
+
     if (!fichier.is_open()) {
         std::cerr << "Erreur : Impossible d'ouvrir le fichier " << cheminFichier << std::endl;
         return false;
@@ -40,18 +42,28 @@ bool Grille::initialiserDepuisFichier(const std::string& cheminFichier) {
 int Grille::verifierVoisins(int x, int y) {
     int compteur = 0;
 
-    // Vérification des 8 voisins individuellement
+    // Vï¿½rification des 8 voisins individuellement
     int voisinages[8][2] = {
         {-1, -1}, {-1, 0}, {-1, 1},  // ligne haut
-        {0, -1},          {0, 1},   // ligne milieu (à gauche et à droite)
+        {0, -1},          {0, 1},   // ligne milieu (ï¿½ gauche et ï¿½ droite)
         {1, -1},  {1, 0}, {1, 1}   // ligne bas
     };
 
-    for (auto& dir : directions) {
-        int nx = (x + dir[0] + lignes) % lignes; // Gestion torique pour les lignes
-        int ny = (y + dir[1] + colonnes) % colonnes; // Gestion torique pour les colonnes
+    // Vï¿½rifie chaque voisin
+    for (int i = 0; i < 8; i++) {
+        int dx = voisinages[i][0];
+        int dy = voisinages[i][1];
 
-        // Ajout de l'état de la cellule voisine au compteur
+        // Calcul des coordonnï¿½es voisines avec gestion torique
+        int nx = x + dx;
+        if (nx < 0) nx += lignes;
+        if (nx >= lignes) nx = nx - lignes;
+
+        int ny = y + dy;
+        if (ny < 0) ny += colonnes;
+        if (ny >= colonnes) ny = ny - colonnes;
+
+        // Ajout de l'ï¿½tat de la cellule voisine au compteur
         compteur += tableau[nx * colonnes + ny];
     }
 
@@ -62,7 +74,7 @@ int Grille::verifierVoisins(int x, int y) {
 void Grille::definirCelluleIndestructible(int x, int y) {
     if (x >= 0 && x < lignes && y >= 0 && y < colonnes) {
         int index = x * colonnes + y;
-        cellulesIndestructibles[index] = !cellulesIndestructibles[index]; // Basculer l'état
+        cellulesIndestructibles[index] = !cellulesIndestructibles[index]; // Basculer l'ï¿½tat
         tableau[index] = cellulesIndestructibles[index] ? false : tableau[index]; // Si indestructible, elle reste morte
     }
 }
@@ -82,7 +94,7 @@ void Grille::exporterGrille(const std::string& cheminFichier) const {
     }
 
     fichier.close();
-    std::cout << "Exportation terminée vers " << cheminFichier << ".\n";
+    std::cout << "Exportation terminï¿½e vers " << cheminFichier << ".\n";
 }
 
 
@@ -90,7 +102,7 @@ void Grille::exporterGrille(const std::string& cheminFichier) const {
 void Grille::definirCelluleImmortelle(int x, int y) {
     if (x >= 0 && x < lignes && y >= 0 && y < colonnes) {
         int index = x * colonnes + y;
-        cellulesImmortelles[index] = !cellulesImmortelles[index]; // Basculer l'état
+        cellulesImmortelles[index] = !cellulesImmortelles[index]; // Basculer l'ï¿½tat
         tableau[index] = cellulesImmortelles[index] ? true : tableau[index]; // Si immortelle, elle devient vivante
     }
 }
@@ -104,18 +116,18 @@ void Grille::sauvegarderEtat() {
 
 bool Grille::revenirEnArriere() {
     if (historique.empty()) {
-        std::cerr << "Aucun état précédent disponible." << std::endl;
+        std::cerr << "Aucun ï¿½tat prï¿½cï¿½dent disponible." << std::endl;
         return false;
     }
 
-    delete[] tableau; // Libérer l'état actuel
-    tableau = historique.top(); // Récupérer l'état précédent
-    historique.pop(); // Supprimer l'état de la pile
+    delete[] tableau; // Libï¿½rer l'ï¿½tat actuel
+    tableau = historique.top(); // Rï¿½cupï¿½rer l'ï¿½tat prï¿½cï¿½dent
+    historique.pop(); // Supprimer l'ï¿½tat de la pile
     return true;
 }
 
 void Grille::mettreAJour() {
-    sauvegarderEtat(); // Sauvegarder l'état actuel avant de le modifier
+    sauvegarderEtat(); // Sauvegarder l'ï¿½tat actuel avant de le modifier
 
     bool* temp = new bool[lignes * colonnes];
     for (int i = 0; i < lignes; ++i) {
@@ -203,15 +215,14 @@ void Grille::changerCase(sf::RenderWindow& window, float cellSize, sf::Event& ev
     if (col >= 0 && col < colonnes && row >= 0 && row < lignes) {
         int index = row * colonnes + col;
 
-        // Vérifier si la cellule est modifiable
+        // Vï¿½rifier si la cellule est modifiable
         if (!cellulesImmortelles[index] && !cellulesIndestructibles[index]) {
             tableau[index] = !tableau[index];
-            std::cout << "Case normale modifiée : (" << row << ", " << col << ") -> "
+            std::cout << "Case normale modifiï¿½e : (" << row << ", " << col << ") -> "
                 << (tableau[index] ? "vivante" : "morte") << std::endl;
         }
         else {
-            std::cout << "Case protégée (immortelle ou indestructible) : (" << row << ", " << col << ")\n";
+            std::cout << "Case protï¿½gï¿½e (immortelle ou indestructible) : (" << row << ", " << col << ")\n";
         }
     }
 }
-

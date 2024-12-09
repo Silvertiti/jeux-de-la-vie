@@ -1,3 +1,5 @@
+#ifndef SLIDER_H
+#define SLIDER_H
 #include <SFML/Graphics.hpp>
 
 class Slider {
@@ -10,12 +12,9 @@ public:
 
     Slider(float x, float y, float taille, float minValeur, float maxValeur);
     void afficher(sf::RenderWindow& window);
-
-
-    void handleEvent(sf::Event& event, sf::RenderWindow& window);
-
-
-    float getCurrentValue() const;
+    void gererEvenementSlider(sf::Event& event, sf::RenderWindow& window);
+    float getCurrentValeur();
 
 };
 
+#endif // SLIDER_H

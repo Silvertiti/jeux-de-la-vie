@@ -14,7 +14,7 @@ private:
     bool pause; // Ajouté pour gérer la pause
 
 public:
-    Jeu(const std::string& cheminFichier, int lignes, int colonnes, float cellSize);
+    Jeu(std::string& cheminFichier, int lignes, int colonnes, float cellSize);
     ~Jeu();
     void bouclePrincipale();
     void avancerIteration(); // Méthode pour avancer d'une itération
@@ -22,4 +22,3 @@ public:
     void boucleConsole();
 
 };
-

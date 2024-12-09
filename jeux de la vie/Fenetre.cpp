@@ -18,12 +18,13 @@ Fenetre::Fenetre(int largeur, int hauteur, const std::string& titre)
     isDragging(false)
 {
 
+    ouvrirFenetreDesign.setBackGroundColorClear();
 
     window.create(sf::VideoMode(largeur, hauteur), titre);
 
     // Bouton "Info"
     ouvrirFenetreDesign.setPosition(largeur - 50, hauteur - 155);
-    ouvrirFenetreDesign.mettreFondVide();
+    ouvrirFenetreDesign.setBackGroundColorClear();
 
     // Texte "Vitesse"
     texteVitesse.setPosition(largeur - 240, hauteur - 55);
@@ -71,12 +72,11 @@ sf::RenderWindow& Fenetre::getWindow() {
     return window;
 }
 
-bool Fenetre::estPause()  {
 bool Fenetre::estPause() {
     return pause;
 }
 
-bool Fenetre::sontClicsGrilleActifs() const {
+bool Fenetre::sontClicsGrilleActifs() {
     return clicsGrilleActifs;
 }
 
@@ -88,7 +88,7 @@ Slider Fenetre::getSlider2() {
     return slider2;
 }
 
-sf::Vector2f Fenetre::getGrilleOffset() const {
+sf::Vector2f Fenetre::getGrilleOffset() {
     return grilleOffset;
 }
 
@@ -224,7 +224,8 @@ void Fenetre::afficherPause(Grille& grille, float cellSize) {
     window.draw(rectangle);
     slider2.afficher(window);
     slider1.afficher(window);
-	texteVitesse.afficher(window);
+    texteVitesse.afficher(window);
+    texteZoom.afficher(window);
 
     ouvrirFenetreDesign.afficher(window);
 
@@ -246,4 +247,3 @@ void Fenetre::afficherPause(Grille& grille, float cellSize) {
         exporter.mettreAJour(window);
     }
 }
-
