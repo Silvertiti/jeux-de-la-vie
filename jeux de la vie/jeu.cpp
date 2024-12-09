@@ -48,9 +48,6 @@ void Jeu::bouclePrincipale() {
         float delay = fenetre.getSlider1().getCurrentValeur();
         cellSize = fenetre.getSlider2().getCurrentValeur();
 
-
-
-
         // Met à jour la grille si le jeu n'est pas en pause et que le délai est écoulé
         if (!fenetre.estPause() && clock.getElapsedTime().asSeconds() >= delay) {
             grille->mettreAJour();
@@ -64,7 +61,6 @@ void Jeu::bouclePrincipale() {
 
     }
 }
-
 
 void Jeu::boucleConsole() {
     std::cout << "Vous avez choisi la boucle console.\n\nDemarrage de la simulation.\n";
@@ -90,7 +86,7 @@ void Jeu::boucleConsole() {
                 }
                 std::cout << "\n"; 
                 fichierLog << "\n";  
-
+            }
             std::cout << "\n";  
             fichierLog << "\n";  
 
@@ -98,8 +94,7 @@ void Jeu::boucleConsole() {
         }
 
         fichierLog.close();  
-    }
-    else {
+    } else {
         std::cerr << "Erreur : entrez une valeur correcte positive. Le programme va se fermer." << std::endl;
     }
 }

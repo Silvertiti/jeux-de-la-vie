@@ -1,6 +1,8 @@
 ﻿#include "Fenetre.h"
 #include "fenetrebonus.h"
 #include <iostream>
+#include "snake.h"
+
 
 Fenetre::Fenetre(int largeur, int hauteur, const std::string& titre)
     : pause(true),
@@ -10,6 +12,7 @@ Fenetre::Fenetre(int largeur, int hauteur, const std::string& titre)
     ouvrirFenetreDesign("(?)"),
     texteZoom("Vitesse"),
     texteVitesse("Zoom"),
+	snake(""),
     activerClicBouton("Activer Modification"),
     clicsGrilleActifs(false),
     slider1((largeur - 150), (hauteur - 100), 150.0f, 1.0f, 0.001f),
@@ -18,13 +21,17 @@ Fenetre::Fenetre(int largeur, int hauteur, const std::string& titre)
     isDragging(false)
 {
 
-    ouvrirFenetreDesign.setBackGroundColorClear();
 
     window.create(sf::VideoMode(largeur, hauteur), titre);
 
     // Bouton "Info"
     ouvrirFenetreDesign.setPosition(largeur - 50, hauteur - 155);
     ouvrirFenetreDesign.setBackGroundColorClear();
+
+	// Bouton "Snake"
+    snake.setPosition(largeur - 350, hauteur - 155);
+    snake.setBackGroundColorClear();
+
 
     // Texte "Vitesse"
     texteVitesse.setPosition(largeur - 240, hauteur - 55);
@@ -94,21 +101,17 @@ sf::Vector2f Fenetre::getGrilleOffset() {
 
 
 void Fenetre::mettreAJourBoutonPause(sf::RenderWindow& window) {
-    // Récupération de la position de la souris dans la fenêtre
     sf::Vector2i positionSouris = sf::Mouse::getPosition(window);
 
-    // Conversion de la position de la souris en coordonnées flottantes
     sf::Vector2f positionSourisFlottante(static_cast<float>(positionSouris.x), static_cast<float>(positionSouris.y));
 
-    // Vérification si la position de la souris est dans les limites du bouton pause
     bool sourisSurBouton = boutonPause.getGlobalBounds().contains(positionSourisFlottante);
 
-    // Modifier la couleur du bouton pause en fonction de l'état de la souris
     if (sourisSurBouton) {
-        boutonPause.setFillColor(sf::Color(64, 64, 64, 255)); // Couleur claire si la souris est dessus
+        boutonPause.setFillColor(sf::Color(64, 64, 64, 255)); 
     }
     else {
-        boutonPause.setFillColor(sf::Color(32, 32, 32, 255)); // Couleur par défaut sinon
+        boutonPause.setFillColor(sf::Color(32, 32, 32, 255)); 
     }
 }
 
@@ -117,7 +120,7 @@ void Fenetre::mettreAJourBoutonPause(sf::RenderWindow& window) {
 
 
 void Fenetre::gererEvenements(sf::Event& event, Grille& grille, float cellSize) {
-    // Gestion du clic droit pour le déplacement
+
     if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Right) {
         isDragging = true;
         dragStartPos = sf::Mouse::getPosition(window);
@@ -139,11 +142,9 @@ void Fenetre::gererEvenements(sf::Event& event, Grille& grille, float cellSize) 
 
 
 
-    // Gestion des clics et interactions
     if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left) {
         sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 
-        // Vérifier les interactions avec les boutons
         if (boutonPause.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
             pause = !pause;
             textePause.setString(pause ? "START" : "PAUSE");
@@ -178,7 +179,12 @@ void Fenetre::gererEvenements(sf::Event& event, Grille& grille, float cellSize) 
 
         if (ouvrirFenetreDesign.estClique(mousePos)) {
             FenetreTouche FenetreTouche(font);
-            FenetreTouche.bouclePrincipaleTouche(); // Ouvre la nouvelle fenêtre
+            FenetreTouche.bouclePrincipaleTouche(); 
+        }
+
+        if (snake.estClique(mousePos)) {
+            SnakeGame snake;
+			snake.run();
         }
 
 
@@ -188,7 +194,6 @@ void Fenetre::gererEvenements(sf::Event& event, Grille& grille, float cellSize) 
             return;
         }
 
-        // Gestion des clics sur la grille
         if (clicsGrilleActifs) {
             sf::Vector2f worldPos = window.mapPixelToCoords(mousePos);
 
@@ -214,7 +219,7 @@ void Fenetre::gererEvenements(sf::Event& event, Grille& grille, float cellSize) 
         }
     }
 
-    // Gestion des sliders
+
     slider1.gererEvenementSlider(event, window);
     slider2.gererEvenementSlider(event, window);
 }
@@ -229,7 +234,6 @@ void Fenetre::afficherPause(Grille& grille, float cellSize) {
 
     ouvrirFenetreDesign.afficher(window);
 
-    // Mettre à jour et afficher le bouton pause
     mettreAJourBoutonPause(window);
     window.draw(boutonPause);
     window.draw(textePause);
@@ -239,8 +243,8 @@ void Fenetre::afficherPause(Grille& grille, float cellSize) {
         reculer.afficher(window);
         activerClicBouton.afficher(window);
         exporter.afficher(window);
+		snake.afficher(window); 
 
-        // Mettre à jour les autres boutons
         avancer.mettreAJour(window);
         reculer.mettreAJour(window);
         activerClicBouton.mettreAJour(window);

@@ -55,13 +55,13 @@ int Grille::verifierVoisins(int x, int y) {
         int dy = voisinages[i][1];
 
         // Calcul des coordonn�es voisines avec gestion torique
-        int nx = x + dx;
-        if (nx < 0) nx += lignes;
-        if (nx >= lignes) nx = nx - lignes;
+		int nx = x + dx; // Gestion torique
+		if (nx < 0) nx += lignes;   // Gestion torique
+		if (nx >= lignes) nx = nx - lignes;     // Gestion torique
 
-        int ny = y + dy;
-        if (ny < 0) ny += colonnes;
-        if (ny >= colonnes) ny = ny - colonnes;
+		int ny = y + dy; // Gestion torique
+		if (ny < 0) ny += colonnes; // Gestion torique
+		if (ny >= colonnes) ny = ny - colonnes; // Gestion torique
 
         // Ajout de l'�tat de la cellule voisine au compteur
         compteur += tableau[nx * colonnes + ny];

@@ -67,14 +67,14 @@ int main() {
         std::cout << "Vous avez choisi un modele predefinis  " << std::endl;
 
         std::cout << "Choisissez le modele\n\n  " << std::endl;
-        std::cout << "1: Metacell\n2: Gosper Glider Gun\n" << std::endl;
+        std::cout << "1: Blinker\n2: Glider\n" << std::endl;
 
         int choixModele;
         std::cin >> choixModele;
 
         if (choixModele == 1) {
             std::cout << "vous avez choissis blinker";
-            std::string cheminFichier = "C:\\Users\\laara\\OneDrive\\Bureau\\test github 2\\modele predefinis\\blinker.txt"; // Utilisation d'un chemin relatif
+            std::string cheminFichier = "C:\\Users\\methe\\source\\repos\\jeux de la vie\\modele predefinis\\blinker.txt"; // Utilisation d'un chemin relatif
 
 
 
@@ -116,8 +116,8 @@ int main() {
         }
 
         if (choixModele == 2) {
-            std::cout << "vous avez choissis Gosper Glider Gun";
-            std::string cheminFichier = "C:\\Users\\laara\\OneDrive\\Bureau\\test github 2\\modele predefinis\\Gosper Glider Gun.txt"; // Utilisation d'un chemin relatif
+            std::cout << "vous avez choissis Glider";
+            std::string cheminFichier = "C:\\Users\\methe\\source\\repos\\jeux de la vie\\modele predefinis\\glider.txt"; // Utilisation d'un chemin relatif
 
 
 

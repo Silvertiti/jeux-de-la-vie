@@ -11,6 +11,7 @@ private:
     Texte texteVitesse;
     Texte texteZoom;
     Bouton ouvrirFenetreDesign;
+    Bouton snake;
     Bouton avancer;
     Bouton reculer;
     Slider slider1; // Vitesse
