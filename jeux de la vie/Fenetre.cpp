@@ -71,11 +71,12 @@ sf::RenderWindow& Fenetre::getWindow() {
     return window;
 }
 
+bool Fenetre::estPause()  {
 bool Fenetre::estPause() {
     return pause;
 }
 
-bool Fenetre::sontClicsGrilleActifs() {
+bool Fenetre::sontClicsGrilleActifs() const {
     return clicsGrilleActifs;
 }
 
@@ -87,7 +88,7 @@ Slider Fenetre::getSlider2() {
     return slider2;
 }
 
-sf::Vector2f Fenetre::getGrilleOffset() {
+sf::Vector2f Fenetre::getGrilleOffset() const {
     return grilleOffset;
 }
 
@@ -223,8 +224,7 @@ void Fenetre::afficherPause(Grille& grille, float cellSize) {
     window.draw(rectangle);
     slider2.afficher(window);
     slider1.afficher(window);
-    texteVitesse.afficher(window);
-    texteZoom.afficher(window);
+	texteVitesse.afficher(window);
 
     ouvrirFenetreDesign.afficher(window);
 

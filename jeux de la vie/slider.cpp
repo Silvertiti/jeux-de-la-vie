@@ -1,14 +1,15 @@
 #include "Slider.h"
 #include <iostream>
 
-Slider::Slider(float x, float y, float height, float minValue, float maxValue) : minValue(minValue), maxValue(maxValue), currentValue(minValue) {
+Slider::Slider(float x, float y, float taille, float minValeur, float maxValeur) : minValeur(minValeur), maxValeur(maxValeur), currentValeur(minValeur) {
 
-    //Spec de la bar 
-    bar.setSize({ 5, height });
+        //Spec de la bar 
+    bar.setSize({ 5, taille });
     bar.setPosition(x - bar.getSize().x, y+10);
     bar.setFillColor(sf::Color::Black);
     bar.setRotation(-90);
-    //Spec du curseur 
+    
+        //Spec du curseur 
     curseur.setRadius(10);
     curseur.setOrigin(10, 10);
     curseur.setPosition(x - bar.getSize().x * 2, y + 8);
@@ -21,39 +22,41 @@ void Slider::afficher(sf::RenderWindow& window) {  //affichage
     window.draw(bar);
     window.draw(curseur);
 }
-void Slider::handleEvent(sf::Event& event, sf::RenderWindow& window) {
+void Slider::gererEvenementSlider(sf::Event& event, sf::RenderWindow& window) {
+    // Vérifie si le bouton gauche de la souris est enfoncé
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-        sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+        // Récupère la position de la souris en coordonnées monde
+        sf::Vector2f mousePosition (sf::Mouse::getPosition(window));
 
-        // Vérifier si la souris est dans la zone de la piste
-        if (mousePos.y >= bar.getPosition().y - 10 && mousePos.y <= bar.getPosition().y + bar.getSize().x + 10) { // Notez qu'on vérifie sur l'axe X en réalité
+        // verif si la souris est dans la zone de la piste
+        if (mousePosition.y >= bar.getPosition().y - 10 && mousePosition.y <= bar.getPosition().y + bar.getSize().x + 10) { // -10 et +10 correspond à la marge autour de la bar 
 
             // Limiter la position X du bouton à la barre (considérant la rotation)
-            float x = mousePos.x;
-            float barStart = bar.getPosition().x; // Position X de la barre
-            float barEnd = barStart + bar.getSize().y; // Longueur de la barre
+            float x = mousePosition.x;
+            float barStart = bar.getPosition().x; 
+            float barEnd = barStart + bar.getSize().y; 
 
             if (x < barStart) x = barStart;
             if (x > barEnd) x = barEnd;
 
-            // Déplacer le curseur
+            // deplacer curseur
             curseur.setPosition(x, bar.getPosition().y -0.8f); // Centré sur la barre
 
             // Calculer la valeur actuelle en fonction de la position X
             float percent = (x - barStart) / bar.getSize().y;
-            currentValue = minValue + percent * (maxValue - minValue);
+            currentValeur = minValeur + percent * (maxValeur - minValeur);
+            
 
-            // Debugging output
-            // std::cout << "Valeur actuelle : " << currentValue
-            //           << " | Position X : " << x << std::endl;
+            //Debugging output
+             std::cout << "Valeur actuelle : " << currentValeur << " | Position X : " << x << std::endl;
         }
     }
 }
 
 
 
-float Slider::getCurrentValue() const { //utiliser pour donner une valeur def ds le constructeur 
-    return currentValue;
+float Slider::getCurrentValeur() { //utiliser pour donner une valeur def ds le constructeur 
+    return currentValeur;
 }
     
 

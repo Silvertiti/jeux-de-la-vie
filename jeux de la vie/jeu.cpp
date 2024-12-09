@@ -2,12 +2,13 @@
 #include <iostream>
 #include <SFML/System.hpp>
 
-Jeu::Jeu(std::string& cheminFichier, int lignes, int colonnes, float cellSize) : lignes(lignes), colonnes(colonnes), cellSize(cellSize),
-fenetre(1000, 900, "Jeu de la Vie - SFML") {
+Jeu::Jeu(const std::string& cheminFichier, int lignes, int colonnes, float cellSize)
+    : lignes(lignes), colonnes(colonnes), cellSize(cellSize),
+    fenetre(1000, 900, "Jeu de la Vie - SFML") {
     grille = new Grille(lignes, colonnes);
     if (!grille->initialiserDepuisFichier(cheminFichier)) {
         std::cerr << "Erreur : Impossible de lire la grille." << std::endl;
-
+        exit(-1);
     }
 }
 
@@ -72,37 +73,32 @@ void Jeu::boucleConsole() {
     std::cout << "Entrez le nombre d'iterations: ";
     std::cin >> iterationschoisis;
     if (iterationschoisis > 0 && iterationschoisis < 1000000) {
-
-        std::ofstream fichierLog("C:\\Users\\methe\\source\\repos\\jeux de la vie\\historique.txt");
+        // Ouvrir le fichier de log pour écrire les états des itérations
+        std::ofstream fichierLog("C:\\Users\\laara\\OneDrive\\Bureau\\test github3\\log.txt");
         if (!fichierLog.is_open()) {
             std::cerr << "Erreur : Impossible d'ouvrir le fichier de log." << std::endl;
             return;
         }
 
+        // Effectuer les itérations
         for (int iteration = 0; iteration < iterationschoisis; ++iteration) {
+            // Afficher l'itération en cours
             std::cout << "Iteration " << iteration + 1 << " :\n";
-            fichierLog << "Iteration " << iteration + 1 << " :\n";
 
+
+            // Afficher l'état de la grille
             for (int i = 0; i < lignes; ++i) {
                 for (int j = 0; j < colonnes; ++j) {
                     std::cout << (grille->getTableau()[i * colonnes + j] ? "1" : "0") << " ";
-                    fichierLog << (grille->getTableau()[i * colonnes + j] ? "1" : "0") << " ";
                 }
-                std::cout << "\n";  
-                fichierLog << "\n"; 
+                std::cout << "\n";  // Nouvelle ligne pour chaque ligne de la grille
             }
 
-            std::cout << "\n";  
-            fichierLog << "\n";  
-
-            grille->mettreAJour();
+            std::cout << "\n";  // Séparation entre les itérations
         }
 
-        fichierLog.close();  
-    }
-    else {
-        std::cerr << "Erreur : entrez une valeur correcte positive. Le programme va se fermer." << std::endl;
+        fichierLog.close();  // Fermer le fichier log
+
+
     }
 }
-
-

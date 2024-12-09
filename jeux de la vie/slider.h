@@ -10,8 +10,12 @@ public:
 
     Slider(float x, float y, float taille, float minValeur, float maxValeur);
     void afficher(sf::RenderWindow& window);
-    void gererEvenementSlider(sf::Event& event, sf::RenderWindow& window);
-    float getCurrentValeur();
+
+
+    void handleEvent(sf::Event& event, sf::RenderWindow& window);
+
+
+    float getCurrentValue() const;
 
 };
 

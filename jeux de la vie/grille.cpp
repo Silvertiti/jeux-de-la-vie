@@ -19,9 +19,7 @@ Grille::~Grille() {
 
 
 bool Grille::initialiserDepuisFichier(const std::string& cheminFichier) {
-
     std::ifstream fichier(cheminFichier);
-
     if (!fichier.is_open()) {
         std::cerr << "Erreur : Impossible d'ouvrir le fichier " << cheminFichier << std::endl;
         return false;
@@ -49,19 +47,9 @@ int Grille::verifierVoisins(int x, int y) {
         {1, -1},  {1, 0}, {1, 1}   // ligne bas
     };
 
-    // Vérifie chaque voisin
-    for (int i = 0; i < 8; i++) {
-        int dx = voisinages[i][0];
-        int dy = voisinages[i][1];
-
-        // Calcul des coordonnées voisines avec gestion torique
-        int nx = x + dx;
-        if (nx < 0) nx += lignes;
-        if (nx >= lignes) nx = nx - lignes;
-
-        int ny = y + dy;
-        if (ny < 0) ny += colonnes;
-        if (ny >= colonnes) ny = ny - colonnes;
+    for (auto& dir : directions) {
+        int nx = (x + dir[0] + lignes) % lignes; // Gestion torique pour les lignes
+        int ny = (y + dir[1] + colonnes) % colonnes; // Gestion torique pour les colonnes
 
         // Ajout de l'état de la cellule voisine au compteur
         compteur += tableau[nx * colonnes + ny];

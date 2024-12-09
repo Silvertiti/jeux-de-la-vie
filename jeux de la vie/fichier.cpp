@@ -5,8 +5,7 @@
 
 bool Fichier::lireDimensions(const std::string cheminFichier, int& lignes, int& colonnes) {
     std::ifstream fichier(cheminFichier);
-    if (!fichier.is_open())
-        return false;
+    if (!fichier.is_open()) return false;
 
     if (fichier >> lignes >> colonnes) {
         // Vérification que les dimensions sont positives
@@ -25,8 +24,7 @@ bool Fichier::lireDimensions(const std::string cheminFichier, int& lignes, int& 
 
 bool Fichier::lireGrille(const std::string cheminFichier, bool* tableau, int lignes, int colonnes) {
     std::ifstream fichier(cheminFichier);
-    if (!fichier.is_open())
-        return false;
+    if (!fichier.is_open()) return false;
 
     // Ignorer les deux premières lignes
     std::string ligne;
