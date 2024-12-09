@@ -1,6 +1,3 @@
-#ifndef SLIDER_H
-#define SLIDER_H
-
 #include <SFML/Graphics.hpp>
 
 class Slider {
@@ -18,4 +15,3 @@ public:
 
 };
 
-#endif // SLIDER_H

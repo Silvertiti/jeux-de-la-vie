@@ -26,13 +26,13 @@ void Slider::gererEvenementSlider(sf::Event& event, sf::RenderWindow& window) {
     // Vérifie si le bouton gauche de la souris est enfoncé
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
         // Récupère la position de la souris en coordonnées monde
-        sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+        sf::Vector2f mousePosition (sf::Mouse::getPosition(window));
 
         // verif si la souris est dans la zone de la piste
-        if (mousePos.y >= bar.getPosition().y - 10 && mousePos.y <= bar.getPosition().y + bar.getSize().x + 10) { // -10 et +10 correspond à la marge autour de la bar 
+        if (mousePosition.y >= bar.getPosition().y - 10 && mousePosition.y <= bar.getPosition().y + bar.getSize().x + 10) { // -10 et +10 correspond à la marge autour de la bar 
 
             // Limiter la position X du bouton à la barre (considérant la rotation)
-            float x = mousePos.x;
+            float x = mousePosition.x;
             float barStart = bar.getPosition().x; 
             float barEnd = barStart + bar.getSize().y; 
 

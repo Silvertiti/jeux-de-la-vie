@@ -1,5 +1,3 @@
-#ifndef JEU_H
-#define JEU_H
 
 #include "Grille.h"
 #include "Fenetre.h"
@@ -21,7 +19,7 @@ public:
     void bouclePrincipale();
     void avancerIteration(); // Méthode pour avancer d'une itération
     void reculerIteration(); // Méthode pour reculer d'une itération
+    void boucleConsole();
 
 };
 
-#endif 

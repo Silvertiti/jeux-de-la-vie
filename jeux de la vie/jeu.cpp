@@ -7,7 +7,7 @@ Jeu::Jeu( std::string& cheminFichier, int lignes, int colonnes, float cellSize):
     grille = new Grille(lignes, colonnes);
     if (!grille->initialiserDepuisFichier(cheminFichier)) {
         std::cerr << "Erreur : Impossible de lire la grille." << std::endl;
-        exit(-1);
+        
     }
 }
 
@@ -20,6 +20,7 @@ void Jeu::reculerIteration() {
         std::cerr << "Impossible de reculer : aucun état précédent disponible." << std::endl;
     }
 }
+
 
 Jeu::~Jeu() {
     delete grille;
@@ -60,3 +61,49 @@ void Jeu::bouclePrincipale() {
 
     }
 }
+#include <fstream>
+#include <iostream>
+#include <cstring>
+
+void Jeu::boucleConsole() {
+    std::cout << "Vous avez choisi la boucle console.\n\nDemarrage de la simulation.\n";
+
+    int iterationschoisis;
+    std::cout << "Entrez le nombre d'iterations: ";
+    std::cin >> iterationschoisis;
+    if (iterationschoisis > 0 && iterationschoisis < 1000000) {
+        // Ouvrir le fichier de log pour écrire les états des itérations
+        std::ofstream fichierLog("C:\\Users\\laara\\OneDrive\\Bureau\\test github3\\log.txt");
+        if (!fichierLog.is_open()) {
+            std::cerr << "Erreur : Impossible d'ouvrir le fichier de log." << std::endl;
+            return;
+        }
+
+        // Effectuer les itérations
+        for (int iteration = 0; iteration < iterationschoisis; ++iteration) {
+            // Afficher l'itération en cours
+            std::cout << "Iteration " << iteration + 1 << " :\n";
+
+
+            // Afficher l'état de la grille
+            for (int i = 0; i < lignes; ++i) {
+                for (int j = 0; j < colonnes; ++j) {
+                    std::cout << (grille->getTableau()[i * colonnes + j] ? "1" : "0") << " ";
+                }
+                std::cout << "\n";  // Nouvelle ligne pour chaque ligne de la grille
+            }
+
+            std::cout << "\n";  // Séparation entre les itérations
+        }
+
+        fichierLog.close();  // Fermer le fichier log
+
+
+    }
+
+    else
+        std::cerr << "erreur: entrez une valeur correct positif \n   Le programme va se fermer  " << std::endl; 
+
+    
+}
+

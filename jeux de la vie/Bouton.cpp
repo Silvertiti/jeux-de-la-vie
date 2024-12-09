@@ -62,7 +62,7 @@ void Bouton::mettreAJour(sf::RenderWindow& window) {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 
     // Vérifier si la souris est au-dessus du bouton
-    if (fond.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
+    if (fond.getGlobalBounds().contains(sf::Vector2f(mousePos))) {
         fond.setFillColor(sf::Color(64, 64, 64, 255)); // Couleur plus claire
     }
     else {

@@ -18,16 +18,19 @@ public:
     ~Grille();
     void definirCelluleIndestructible(int x, int y); // Définit une cellule comme morte indestructible
     void definirCelluleImmortelle(int x, int y); // Définit une cellule comme immortelle
-	int verifierVoisins(int x, int y);
+    int verifierVoisins(int x, int y);
     void sauvegarderEtat(); // Sauvegarde l'état actuel
     bool revenirEnArriere(); // Revenir à l'état précédent
-	bool initialiserDepuisFichier(const std::string& cheminFichier);
+    bool initialiserDepuisFichier(const std::string& cheminFichier);
     void mettreAJour();
     void afficher(sf::RenderWindow& window, float cellSize, sf::Vector2f grilleOffset);
     void changerCase(sf::RenderWindow& window, float cellSize, sf::Event& event, sf::Vector2f grilleOffset);
     int getColonnes() const; // Retourne le nombre de colonnes
     int getLignes() const;   // Retourne le nombre de lignes
     void exporterGrille(const std::string& cheminFichier) const;
+    bool* getTableau() {
+        return tableau;  // Renvoie le tableau des cellules
+    }
 
 };
 

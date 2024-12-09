@@ -19,7 +19,7 @@ int main() {
     }
     if (choixFichier == 2) {
 
-        std::string cheminFichier = "C:\\Users\\laara\\OneDrive\\Bureau\\test github 2\\test.txt";
+        std::string cheminFichier = "C:\\Users\\laara\\OneDrive\\Bureau\\test github3\\test.txt";
 
 
         if (!Fichier::lireDimensions(cheminFichier, lignes, colonnes)) {
@@ -55,10 +55,7 @@ int main() {
         else (choix == 2); {
             std::cout << "Interface console/fichier sélectionnée." << std::endl;
 
-            int nbiteration;// a prendre en private dans 
-            std::cout << "combien d'itération voulez vous" << std::endl;
-            std::cin >> nbiteration;
-            //jeu.boucleConsole(nbiteration);
+            jeu.boucleConsole();
         }
 
     }
@@ -111,9 +108,10 @@ int main() {
                 std::cout << "Interface graphique sélectionnée." << std::endl;
                 jeu.bouclePrincipale();
             }
-            else if (choix == 2) {
+            else (choix == 2); {
                 std::cout << "Interface console/fichier sélectionnée." << std::endl;
-                //jeu.boucleConsole();
+
+                jeu.boucleConsole();
             }
         }
 
@@ -153,9 +151,10 @@ int main() {
                 std::cout << "Interface graphique sélectionnée." << std::endl;
                 jeu.bouclePrincipale();
             }
-            else if (choix == 2) {
+            else (choix == 2); {
                 std::cout << "Interface console/fichier sélectionnée." << std::endl;
-                //jeu.boucleConsole();
+
+                jeu.boucleConsole();
             }
         }
     }
