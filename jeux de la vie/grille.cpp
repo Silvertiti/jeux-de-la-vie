@@ -19,7 +19,9 @@ Grille::~Grille() {
 
 
 bool Grille::initialiserDepuisFichier(const std::string& cheminFichier) {
+
     std::ifstream fichier(cheminFichier);
+
     if (!fichier.is_open()) {
         std::cerr << "Erreur : Impossible d'ouvrir le fichier " << cheminFichier << std::endl;
         return false;
@@ -27,9 +29,9 @@ bool Grille::initialiserDepuisFichier(const std::string& cheminFichier) {
 
     for (int i = 0; i < lignes; ++i) {
         for (int j = 0; j < colonnes; ++j) {
-            char c;
-            fichier >> c;
-            tableau[i * colonnes + j] = (c == '1');
+            char symbole;
+            fichier >> symbole;
+            tableau[i * colonnes + j] = (symbole == '1');
         }
     }
 
@@ -39,16 +41,29 @@ bool Grille::initialiserDepuisFichier(const std::string& cheminFichier) {
 
 int Grille::verifierVoisins(int x, int y) {
     int compteur = 0;
-    int directions[8][2] = {
-        {-1, -1}, {-1, 0}, {-1, 1},
-        {0, -1},          {0, 1},
-        {1, -1},  {1, 0}, {1, 1}
+
+    // Vérification des 8 voisins individuellement
+    int voisinages[8][2] = {
+        {-1, -1}, {-1, 0}, {-1, 1},  // ligne haut
+        {0, -1},          {0, 1},   // ligne milieu (à gauche et à droite)
+        {1, -1},  {1, 0}, {1, 1}   // ligne bas
     };
 
-    for (auto& dir : directions) {
-        int nx = (x + dir[0] + lignes) % lignes; // Gestion torique pour les lignes
-        int ny = (y + dir[1] + colonnes) % colonnes; // Gestion torique pour les colonnes
+    // Vérifie chaque voisin
+    for (int i = 0; i < 8; i++) {
+        int dx = voisinages[i][0];
+        int dy = voisinages[i][1];
 
+        // Calcul des coordonnées voisines avec gestion torique
+        int nx = x + dx;
+        if (nx < 0) nx += lignes;
+        if (nx >= lignes) nx = nx - lignes;
+
+        int ny = y + dy;
+        if (ny < 0) ny += colonnes;
+        if (ny >= colonnes) ny = ny - colonnes;
+
+        // Ajout de l'état de la cellule voisine au compteur
         compteur += tableau[nx * colonnes + ny];
     }
 

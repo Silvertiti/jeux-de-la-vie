@@ -46,8 +46,8 @@ void Bouton::setString(const std::string& nouveauTexte) {
     text.setPosition(fond.getPosition().x + padding, fond.getPosition().y + padding - textBounds.top);
 }
 
-void Bouton::setBackGroundColorClear() {                                  //pour definir une couleur perso au fond d'un bouto
-    fond.setFillColor(sf::Color(0,0,0,0));
+void Bouton::mettreFondVide() {                                  //pour definir une couleur perso au fond d'un bouto
+    fond.setFillColor(sf::Color(0, 0, 0, 0));
 }
 
 
@@ -62,7 +62,7 @@ void Bouton::mettreAJour(sf::RenderWindow& window) {
     sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 
     // Vérifier si la souris est au-dessus du bouton
-    if (fond.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePos))) {
+    if (fond.getGlobalBounds().contains(sf::Vector2f(mousePos))) {
         fond.setFillColor(sf::Color(64, 64, 64, 255)); // Couleur plus claire
     }
     else {
